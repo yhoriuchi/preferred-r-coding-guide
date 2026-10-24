@@ -1,0 +1,5 @@
+country,date,n_cases,count_source,iso3
+Japan,2026-01-01,1000,"1,000",JPN
+Japan,2026-02-01,1100,"1,100",JPN
+Australia,2026-01-01,900,900,AUS
+Australia,2026-02-01,950,950,AUS

@@ -1,0 +1,2 @@
+term,estimate,std.error,conf.low,conf.high,p.value,comparison
+treatmenttreatment,2.000000000000001,0.7211102550927979,0.3371167698178783,3.6628832301821235,0.024165730618244067,Treatment vs. control

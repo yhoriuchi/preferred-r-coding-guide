@@ -1,0 +1,1 @@
+Synthetic example: treatment-minus-control difference in mean outcome. The point is an unadjusted OLS estimate; the line is a 95% confidence interval using HC2 robust standard errors. Ten artificial respondents have observed treatment and outcome. The dashed line marks zero. These numbers illustrate coding style and are not research findings.
