@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Yusaku Horiuchi's source-based guide to readable R analysis with AI.">
+  <title>Source Evidence</title>
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/guide.css">
+  <script src="assets/guide.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#guide-content">Skip to guide</a>
+<main class="page-shell">
+  <header class="hero">
+    <h1>Source Evidence</h1>
+    <ul class="metadata">
+      <li><strong>Author:</strong> Yusaku Horiuchi</li>
+      <li><strong>Affiliation:</strong> Syde P. Deeb Eminent Scholar in Political Science, Florida State University</li>
+      <li><strong>Created:</strong> October 24, 2026</li>
+      <li><strong>Last revised:</strong> October 24, 2026</li>
+    </ul>
+    <p>A companion to My Preferred R Coding Guide.</p>
+    
+  </header>
+  <p class="return-link"><a href="index.html">← Return to the guide</a></p><article id="guide-content">
+<p>Audit date: October 24, 2026. This report is a source interpretation, not a revision of the Waseda course.</p>
+<h2 id="scope-and-method">Scope and Method</h2>
+<p>The supplied archive is the source snapshot. It contains 5,024 ZIP entries, including directories and macOS metadata. After excluding <code>__MACOSX</code>, there are <strong>35 actual <code>.R</code> files with 7,020 lines</strong>. All 35 were read; the two revised scripts were compared with their originals, and the screenshot copy was identified separately. All 35 pass R's parser.</p>
+<p>The 35 comprise 22 ordinary teaching scripts, two revised scripts, ten files containing bad/better visualization comparisons, and one screenshot copy. These counts describe files, not 35 independent endorsements of a coding convention. Repeated versions and alternative solutions are not independent evidence.</p>
+<p>Additional reading covered the complete course style document, the relevant workflow instructions, and all seven substantive Technical Notes. The other <code>.Rnw</code> files are inventoried, but this audit does not claim to have fully reviewed every exam, answer key, slide, PDF, or data file. R code embedded in those documents was not subjected to an exhaustive separate audit. The source inventory contains 66 <code>.Rnw</code> files, including the technical-note summary, plus the 35 scripts and the style document.</p>
+<p>The scripts were parsed without executing them. Live scraping, downloads, incomplete exercises, and original empirical analyses were not rerun. The new runnable demonstrations were separately executed, as recorded in the verification report.</p>
+<p>Locally retained files: <code>source_inventory.csv</code> records archive-relative paths, bytes, line counts, roles, and SHA-256 digests; <code>source_summary.json</code> records the archive digest; <code>r_syntax_inventory.csv</code> records per-script parsing and selected token counts. These private audit companions are excluded from the public repository and downloadable package. No original course materials are distributed.</p>
+<h2 id="why-frequency-alone-is-insufficient">Why Frequency Alone Is Insufficient</h2>
+<p>Parsing identifies 551 native-pipe tokens, no magrittr pipe tokens, 15 dollar operators, 23 single-bracket operators, and 53 double-bracket operators across the 35 scripts. These counts exclude commented-out code and string contents. They include duplicates, demonstrations, and intentionally bad examples.</p>
+<p>The native pipe is both a consistent source pattern and an explicit course convention. The bracket counts, however, do not establish a preference for bracket extraction: those operations are concentrated in programming and list lessons. The latest user request explicitly favors avoiding brackets and <code>$</code> where practical.</p>
+<p>Likewise, <code>theme_minimal()</code> appears in the paired visualization demonstrations, including their improved plots. The demonstrations teach chart design; their existence does not override the user's explicit <code>theme_few()</code> preference. Plot titles in classroom examples do not override the confirmed rule for manuscript figures.</p>
+<h2 id="source-key">Source Key</h2>
+<p>Paths below are relative to <code>waseda_2026/</code> inside the ZIP. Line numbers refer to the original snapshot, not a reformatted copy.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Source path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STYLE</td>
+<td><code>style_guide/style_guide.tex</code></td>
+</tr>
+<tr>
+<td>WORKFLOW</td>
+<td><code>day01/precept01_setup/documents/precept01_workflow.Rnw</code></td>
+</tr>
+<tr>
+<td>P01</td>
+<td><code>day01/precept01_setup/scripts/precept01_script.R</code></td>
+</tr>
+<tr>
+<td>P02</td>
+<td><code>day01/precept02_r_language/scripts/precept02_script.R</code></td>
+</tr>
+<tr>
+<td>P03</td>
+<td><code>day01/precept03_explore_1/scripts/precept03_script.R</code></td>
+</tr>
+<tr>
+<td>P04</td>
+<td><code>day01/precept04_explore_2/scripts/precept04_script.R</code></td>
+</tr>
+<tr>
+<td>P04-OPT</td>
+<td><code>day01/precept04_explore_2/scripts/precept04_optional_challenges_script.R</code></td>
+</tr>
+<tr>
+<td>P05</td>
+<td><code>day02/precept05_data_exploration_part3/scripts/precept05_script.R</code></td>
+</tr>
+<tr>
+<td>P06</td>
+<td><code>day02/precept06_data_exploration_part4/scripts/precept06_script.R</code></td>
+</tr>
+<tr>
+<td>P07</td>
+<td><code>day02/precept07_data_exploration_part5/scripts/precept07_script.R</code></td>
+</tr>
+<tr>
+<td>P08</td>
+<td><code>day03/precept08_data_wrangling_part1/scripts/precept08_script.R</code></td>
+</tr>
+<tr>
+<td>P09</td>
+<td><code>day03/precept09_data_wrangling_part2/scripts/precept09_script.R</code></td>
+</tr>
+<tr>
+<td>P10</td>
+<td><code>day03/precept10_data_wrangling_part3/scripts/precept10_script.R</code></td>
+</tr>
+<tr>
+<td>P11-1 / P11-2</td>
+<td><code>day04/precept11_programming_part1/scripts/precept11_script_part1.R</code> / <code>precept11_script_part2.R</code>, with both <code>_revised.R</code> versions</td>
+</tr>
+<tr>
+<td>P12-1 / P12-2 / PREP</td>
+<td><code>day04/precept12_programming_part2/scripts/precept12_script_part1.R</code>, <code>precept12_script_part2.R</code>, <code>precept12_preparation.R</code></td>
+</tr>
+<tr>
+<td>P13-1 / P13-2</td>
+<td><code>day04/precept13_statistical_modeling_visualization/scripts/precept13_script_part1.R</code> / <code>precept13_script_part2.R</code></td>
+</tr>
+<tr>
+<td>WORKSHOP</td>
+<td><code>day05/handout01_good_bad_data_visualization/scripts/workshop_script.R</code></td>
+</tr>
+<tr>
+<td>BAD01–BAD10</td>
+<td>The ten <code>bad_visualization_*.R</code> files in that handout's <code>scripts/bad_visualizations/</code> folder</td>
+</tr>
+<tr>
+<td>INTERACTIVE</td>
+<td>The three <code>interactive_data_visualization_script_*.R</code> files in <code>day05/handout02_interactive_data_visualization/scripts/</code></td>
+</tr>
+<tr>
+<td>TN01–TN07</td>
+<td><code>technical_notes/technical_notes_01.Rnw</code> through <code>technical_notes_07.Rnw</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="preference-to-evidence-map">Preference-to-Evidence Map</h2>
+<table>
+<thead>
+<tr>
+<th>Guide choice</th>
+<th>Primary evidence</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Script purpose near the top</td>
+<td>Current request; WORKFLOW around line 190</td>
+<td>Confirmed, with course support</td>
+</tr>
+<tr>
+<td>Single-<code>#</code> header, no decorative wrapper</td>
+<td>STYLE, Script Style; all script openings</td>
+<td>Course-derived</td>
+</tr>
+<tr>
+<td>RStudio sections</td>
+<td>Current request; WORKFLOW shortcut table; STYLE</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td><code>styler</code></td>
+<td>Current request; WORKFLOW line 184; STYLE line 303</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>Native pipe</td>
+<td>STYLE line 304; WORKFLOW pipe section; parsed scripts</td>
+<td>Course-derived, also existing reference</td>
+</tr>
+<tr>
+<td>Explicit <code>library()</code> near the top</td>
+<td>STYLE, Package Names; script settings sections</td>
+<td>Course-derived</td>
+</tr>
+<tr>
+<td>Manual installation outside analysis scripts</td>
+<td>WORKFLOW line 93 and preceding explanation</td>
+<td>Explicit preference in course source; not a new global installation rule</td>
+</tr>
+<tr>
+<td>Relative paths from <code>.Rproj</code> root</td>
+<td>WORKFLOW project section; STYLE; P13 <code>file.path()</code></td>
+<td>Course-derived, also existing reference</td>
+</tr>
+<tr>
+<td>Lowercase snake case</td>
+<td>STYLE file naming; existing R/figure reference</td>
+<td>Working default; source has legacy exceptions</td>
+</tr>
+<tr>
+<td>Readable multistep pipelines</td>
+<td>P05–P10, P12, STYLE</td>
+<td>Repeated pattern</td>
+</tr>
+<tr>
+<td><code>read_csv()</code> over <code>read.csv()</code></td>
+<td>P05 lines 25–29</td>
+<td>Explicit source preference; do not generalize type guessing as guaranteed</td>
+</tr>
+<tr>
+<td>Visible intermediate objects</td>
+<td>P04 figure-specific frames; P07 <code>df2a</code>/<code>df2b</code>; P13 tidy results</td>
+<td>Repeated pattern</td>
+</tr>
+<tr>
+<td><code>pull()</code> versus one-column <code>select()</code></td>
+<td>P06 scalar extraction; P11-1 vector/data-frame comparison</td>
+<td>Explicit conceptual distinction</td>
+</tr>
+<tr>
+<td>Avoid ordinary <code>$</code> and brackets</td>
+<td>Current request</td>
+<td>Latest instruction takes precedence over teaching demonstrations</td>
+</tr>
+<tr>
+<td><code>pluck()</code> as list extraction</td>
+<td>Practical tidyverse alternative</td>
+<td>Recommendation; not claimed as a repeated course idiom</td>
+</tr>
+<tr>
+<td>Clean and compare source labels</td>
+<td>P09 lines 33–61</td>
+<td>Source demonstrates explicit corrections and unmatched-name inspection</td>
+</tr>
+<tr>
+<td>Keep original values for consequential recodes</td>
+<td>P09 inspection approach</td>
+<td>Recommendation extending source inspectability</td>
+</tr>
+<tr>
+<td>Regex and stringr distinctions</td>
+<td>P09; TN06</td>
+<td>Course-derived</td>
+</tr>
+<tr>
+<td>Reshape administrative tables</td>
+<td>P08 <code>fill()</code>, pivots, totals, fiscal dates</td>
+<td>Source workflow; individual constants are task-specific</td>
+</tr>
+<tr>
+<td>Explain dropped missing cells</td>
+<td>P08 line 80</td>
+<td>Recommendation prompted by <code>values_drop_na = TRUE</code></td>
+</tr>
+<tr>
+<td>End persistent grouping</td>
+<td>P05 lines 99–104; TN02</td>
+<td>Strong explicit source recommendation</td>
+</tr>
+<tr>
+<td>Top-N and tie decisions</td>
+<td>P06 rank alternatives; TN02</td>
+<td>Source distinction plus corrected interpretation of global/per-year ranking</td>
+</tr>
+<tr>
+<td>Check joins with <code>anti_join()</code></td>
+<td>P09 lines 41, 44, 60</td>
+<td>Repeated explicit checks</td>
+</tr>
+<tr>
+<td>Preserve map polygons with <code>left_join()</code></td>
+<td>P11-2 map join and explanatory comment</td>
+<td>Explicit source rationale</td>
+</tr>
+<tr>
+<td>Check relationship and row count</td>
+<td>P09/P11 join reasoning; dplyr reference</td>
+<td>Recommendation beyond literal source syntax</td>
+</tr>
+<tr>
+<td>Factor labels/order</td>
+<td>P10; P06 ranking; P13 treatment outcomes</td>
+<td>Repeated source pattern</td>
+</tr>
+<tr>
+<td>Dot-prefixed function inputs</td>
+<td>P11-2 lines 117–120; P12-2; TN07</td>
+<td>Explicit self-described preference in source, not completely consistent</td>
+</tr>
+<tr>
+<td>Start with one case before automating</td>
+<td>P11 function progression; P12 loop/function/map sequence</td>
+<td>Course-derived</td>
+</tr>
+<tr>
+<td><code>map()</code> then <code>list_rbind()</code></td>
+<td>P12-1 lines 117–120; current purrr reference</td>
+<td>Existing source alternative and current recommendation</td>
+</tr>
+<tr>
+<td>Allow clear implicit return</td>
+<td>P11-1 and P12-1 explanations</td>
+<td>Course-derived; conflicts with strict Google</td>
+</tr>
+<tr>
+<td>Explain embracing and string indirection</td>
+<td>TN07; P13-1 optional functions</td>
+<td>Context-specific tools, legitimate bracket exception</td>
+</tr>
+<tr>
+<td>Model → tidy results → plot</td>
+<td>P13-1</td>
+<td>Repeated analytical workflow</td>
+</tr>
+<tr>
+<td><code>lm_robust()</code> where appropriate</td>
+<td>P13-1 and P13-2</td>
+<td>Demonstrated estimator, not a universal model choice</td>
+</tr>
+<tr>
+<td>Explicit coefficient labels and notes</td>
+<td>P13-2 line 67 onward</td>
+<td>Source table workflow</td>
+</tr>
+<tr>
+<td>Aggregate before <code>geom_col()</code></td>
+<td>P03 line 143; P05 bars; P07 lines 76, 119</td>
+<td>Strong explicit source preference</td>
+</tr>
+<tr>
+<td>Put shared aesthetics in <code>ggplot()</code></td>
+<td>P03 inheritance discussion; P07; TN03</td>
+<td>Course-derived</td>
+</tr>
+<tr>
+<td>Separate mapping from setting</td>
+<td>P03/P04; TN03</td>
+<td>Explicit teaching principle</td>
+</tr>
+<tr>
+<td>Layer order matters</td>
+<td>P04 points over smooth; P05 areas/bars/lines</td>
+<td>Strong source emphasis</td>
+</tr>
+<tr>
+<td>One annotation, not one per row</td>
+<td>TN01</td>
+<td>Explicit technical note</td>
+</tr>
+<tr>
+<td><code>theme_few()</code></td>
+<td>Current request; existing confirmed reference; main course figures</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>Theme adjustments follow complete theme</td>
+<td>P06; P07; P11-2</td>
+<td>Repeated source explanation</td>
+</tr>
+<tr>
+<td>Direct labels and small multiples</td>
+<td>P04-OPT; WORKSHOP; BAD02/BAD07</td>
+<td>Source design direction; confirmed legend preference in existing reference</td>
+</tr>
+<tr>
+<td>Zoom without dropping observations</td>
+<td>TN04; P13-1</td>
+<td>Explicit explanation</td>
+</tr>
+<tr>
+<td>One scale per aesthetic</td>
+<td>TN05</td>
+<td>Corrected synthesis: combine settings instead of reversing competing scales</td>
+</tr>
+<tr>
+<td>Zero baselines and useful chart choices</td>
+<td>All ten BAD/better pairs</td>
+<td>Learn from the better alternative, not the deliberate failure</td>
+</tr>
+<tr>
+<td>Named <code>plot =</code> in exports</td>
+<td>P13-1; BAD examples</td>
+<td>Source pattern plus safety rationale</td>
+</tr>
+<tr>
+<td>Seed relevant randomness</td>
+<td>P04 jitter; BAD examples; plotly example</td>
+<td>Repeated source pattern</td>
+</tr>
+<tr>
+<td>Clean-session and saved-output checks</td>
+<td>WORKFLOW final paragraph; most script endings</td>
+<td>Explicit course instruction</td>
+</tr>
+<tr>
+<td>Preserve scripts; manuscript captions, typography, tables</td>
+<td>Existing personal R/figure reference</td>
+<td>Previously confirmed preferences; not newly inferred from this ZIP</td>
+</tr>
+</tbody>
+</table>
+<h2 id="coverage-notes-by-script-group">Coverage Notes by Script Group</h2>
+<ul>
+<li><strong>P01 and its screenshot copy:</strong> relative paths, map layers, single-<code>#</code> header; <code>theme_minimal()</code> is a setup demonstration. The copy omits the final reproducibility reminder and is not independent evidence.</li>
+<li><strong>P02:</strong> base language and type demonstrations; brackets, <code>data.frame()</code>, coercion, and elementary comments are teaching content.</li>
+<li><strong>P03:</strong> mapping/inheritance, optional comparisons, an explicit statement favoring pre-wrangling plus <code>geom_col()</code>; several examples are intentionally undesirable or incomplete alternatives.</li>
+<li><strong>P04 and P04-OPT:</strong> time-series frames, gray context, direct line labels, annotations, jitter seed, <code>theme_few()</code>. The optional file overlaps the main script; do not double-count it as a second preference endorsement.</li>
+<li><strong>P05:</strong> readr preference, group persistence, within-country comparisons, precomputed bar data, layer order, explicit date windows.</li>
+<li><strong>P06:</strong> comparison of limits, <code>pull()</code> for scalars, three ranking conventions, patchwork versus facets, explicit factor/display ordering.</li>
+<li><strong>P07:</strong> row-unit and duplicate inspection, missing-value explanation, counts before bars, selective labels, residual inspection, visible statistical modeling.</li>
+<li><strong>P08:</strong> messy tables, filled headings, explicit month mapping, subtotal removal, fiscal dates, saved RDS stages, visible shares and annotations.</li>
+<li><strong>P09:</strong> regex, state-name correction, unmatched joins, string normalization, dates, geographic transformation, informative inspection.</li>
+<li><strong>P10:</strong> forcats operations, source coding, property-damage units, logged values, thresholds, facets, geographic keys. Literal source thresholds and legacy object capitalization remain contextual.</li>
+<li><strong>P11-1 and revised:</strong> increasingly capable functions, vector/list distinctions, input validation, live HTML extraction. The revised file adds clarification; it does not introduce a new analysis workflow.</li>
+<li><strong>P11-2 and revised:</strong> dot-prefixed inputs, correct map join, explicit maps, special multi-country handling, branching. The only revised-file change is introductory wording. Dividing multi-country deaths equally is an exercise-specific assumption, not a cleaning rule.</li>
+<li><strong>P12-PREP:</strong> acquisition is separate from the main script; archive URLs and timeout settings are task-specific.</li>
+<li><strong>P12-1:</strong> loop, function, <code>map()</code>, <code>map_dfr()</code>, <code>list_rbind()</code>, and <code>all.equal()</code> comparison. Narrow suppressed read warnings are not generalized.</li>
+<li><strong>P12-2:</strong> optional list construction, flexible functions, separate optional filters, source-file labels, factors, nonlinear smooth. Positional latest-file selection is not a reliable general “most recent” rule.</li>
+<li><strong>P13-1:</strong> model/tidy/plot progression, subgroup examples, explicit plot exports, optional automation and unfinished exercise. Preserve simple explicit models as a readable option.</li>
+<li><strong>P13-2:</strong> construct a derived outcome, inspect its coding, build formulas, label table coefficients, identify uncertainty in notes.</li>
+<li><strong>WORKSHOP:</strong> rankings, highlighted small multiples, reverse axis, gray comparison data, no-legend identification; optional expanded background data is intentional duplication for plotting.</li>
+<li><strong>BAD01:</strong> truncated versus zero-baseline bars.</li>
+<li><strong>BAD02:</strong> crowded line legend versus endpoint labels.</li>
+<li><strong>BAD03:</strong> pie slices versus sorted bars.</li>
+<li><strong>BAD04:</strong> unrelated dual axes versus separate panels.</li>
+<li><strong>BAD05:</strong> too many labels versus selected, repelled labels.</li>
+<li><strong>BAD06:</strong> counts versus population-adjusted rates; only the comparison question determines the correct quantity.</li>
+<li><strong>BAD07:</strong> stacked area versus shared-baseline small multiples.</li>
+<li><strong>BAD08:</strong> stacked Likert versus a diverging view; neutral responses need deliberate treatment.</li>
+<li><strong>BAD09:</strong> grouped bars versus slope comparisons.</li>
+<li><strong>BAD10:</strong> decorative 3D polygons versus sorted horizontal bars.</li>
+<li><strong>Three INTERACTIVE scripts:</strong> animation, ggplotly, and leaflet demonstrations; no basis for requiring interactive outputs or their themes in every analysis.</li>
+</ul>
+<h2 id="source-problems-not-promoted-into-rules">Source Problems Not Promoted into Rules</h2>
+<ol>
+<li><strong>TN02 ranking wording:</strong> the text describes finding the top five within each year, but fully ungrouping and then <code>slice_max()</code> yields a global selection. The guide explicitly separates those targets.</li>
+<li><strong>TN05 scale replacement:</strong> reversing the order of two scale definitions merely changes which one is replaced. The guide recommends combining scale settings and separating coordinate zooming.</li>
+<li><strong>TN07 “Name injection”:</strong> <code>mutate(new_var := {{ .variable }})</code> uses a fixed output name; it is not an example of dynamically injecting a name. The guide does not reproduce that interpretation.</li>
+<li><strong>P11 live table indices and source-specific parsing:</strong> HTML positions and country allocations can change or encode assumptions. The guide requires content validation and an explicit rationale.</li>
+<li><strong>P12 warning suppression / alphabetical file order:</strong> neither establishes a general default for hiding read failures or selecting a latest release.</li>
+<li><strong>P13 alternative-function exercise:</strong> the final placeholder function has intentionally unfinished branches. It is an exercise, not a reusable production implementation.</li>
+<li><strong>Legacy styles:</strong> <code>ifelse()</code>, <code>data.frame()</code>, mixed-case names, different themes, and direct extraction remain valid source observations but are not automatically preferred for newly generated code.</li>
+</ol>
+<p>These findings were used to improve the synthesis. The original teaching materials were not edited.</p>
+<h2 id="matching-the-other-five-guides">Matching the Other Five Guides</h2>
+<p>Local source and CSS were inspected for Guide to Recording AI Use, Replication Package Guide, BibTeX Cleaning Agent Guide, QSF Audit Agent Guide, and LaTeX Research Article Guide. All share the same overall visual family, but they are not pixel-identical.</p>
+<p>The new guide copies the LaTeX guide's base stylesheet, which matches the common QSF/BibTeX typography and spacing: system sans-serif body font; <code>#f7f8fb</code> background; <code>#18202a</code> text; teal links; dark code blocks; a 948px maximum shell; 32px total horizontal allowance; 40px top / 64px bottom shell padding; a responsive 2.3rem–4.8rem title; 1.55rem section headings; and 1.6 body line height. Mobile follows the same 760px breakpoint and 22px total horizontal allowance.</p>
+<p>The AI-use guide uses line height 1.52 and some smaller section gaps; the replication guide uses a slightly different shell allowance and bottom padding. The chosen base follows the majority family rather than pretending all five have identical values. Additional rules support a table of contents, focus outlines, and local download/copy controls without changing the shared base typography.</p>
+<p>The existing guides are English web guides, so the deliverable uses English and static HTML, with Markdown as the maintainable text source. Following the author's publication request, this guide is distributed through the <code>yhoriuchi/preferred-r-coding-guide</code> repository and GitHub Pages. No tracking badge was added.</p>
+<h2 id="limits-on-interpretation">Limits on Interpretation</h2>
+<p>This is a substantial, source-based first version. It cannot establish undocumented preferences with certainty or guarantee effortless understanding of every future analysis. Course-derived choices and recommendations remain labeled. The global manual and existing R/figure reference were not rewritten. Future explicit corrections from Yusaku should update this guide through the applicable rule-management workflow when they become durable operating rules.</p>
+</article>
+  <footer><p>Version 1.0 · Prepared with AI assistance from the supplied Waseda 2026 materials.
+  Confirmed preferences, course-derived defaults, and recommendations are distinguished.</p>
+  <p><a href="index.html">Guide</a> · <a href="evidence.html">Source evidence</a> ·
+  <a href="verification.html">Verification</a> · <a href="PREFERRED_R_STYLE.md" download>Markdown</a></p></footer>
+</main>
+</body>
+</html>

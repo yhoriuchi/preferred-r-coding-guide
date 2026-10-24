@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Yusaku Horiuchi's source-based guide to readable R analysis with AI.">
+  <title>Verification Record</title>
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/guide.css">
+  <script src="assets/guide.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#guide-content">Skip to guide</a>
+<main class="page-shell">
+  <header class="hero">
+    <h1>Verification Record</h1>
+    <ul class="metadata">
+      <li><strong>Author:</strong> Yusaku Horiuchi</li>
+      <li><strong>Affiliation:</strong> Syde P. Deeb Eminent Scholar in Political Science, Florida State University</li>
+      <li><strong>Created:</strong> October 24, 2026</li>
+      <li><strong>Last revised:</strong> October 24, 2026</li>
+    </ul>
+    <p>A companion to My Preferred R Coding Guide.</p>
+    
+  </header>
+  <p class="return-link"><a href="index.html">← Return to the guide</a></p><article id="guide-content">
+<p>Checked October 24, 2026. This record distinguishes source inspection from execution of the new examples.</p>
+<h2 id="source-review">Source Review</h2>
+<ul>
+<li>All 35 actual <code>.R</code> files in the supplied ZIP were read and passed <code>parse()</code> under R 4.6.1.</li>
+<li>Two revised scripts were compared with their originals; the screenshot copy and overlapping optional examples were identified separately.</li>
+<li>The course style document, relevant workflow instructions, and all seven substantive Technical Notes were read.</li>
+<li>The inventory includes the 66 <code>.Rnw</code> files, but not every embedded code chunk or surrounding course document was individually audited. Original course analyses and live downloads were not rerun.</li>
+<li>The archive SHA-256 and per-file digests are recorded locally. Original source files were not changed.</li>
+</ul>
+<h2 id="new-r-files">New R Files</h2>
+<p><code>styler</code> 1.11.0 was run on both examples, the starter template, and the source-inspection script. Changes were reviewed. The two runnable examples then completed with <code>Rscript --vanilla</code> from the guide root, without analysis/model/plot warnings. Tidyverse startup messages identify normal function-name conflicts; the examples do not use ambiguous external versions of those functions.</p>
+<p>The starter template parses but deliberately stops until filled in. It is not presented as a completed analysis. Markdown code excerpts are explanatory snippets; their syntax is checked separately, but they do not all run independently without the surrounding named objects.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Synthetic input records</td>
+<td>12 unique respondent IDs</td>
+</tr>
+<tr>
+<td>Sample accounting</td>
+<td>10 included, 1 missing outcome, 1 missing treatment</td>
+</tr>
+<tr>
+<td>Analysis sample</td>
+<td>5 control and 5 treatment respondents</td>
+</tr>
+<tr>
+<td>Means</td>
+<td>Control 3.6; treatment 5.6</td>
+</tr>
+<tr>
+<td>Estimated contrast</td>
+<td>2.0 scale points; agrees with the difference in means</td>
+</tr>
+<tr>
+<td>Uncertainty</td>
+<td>HC2 standard error 0.7211103; 95% interval approximately 0.3371 to 3.6629</td>
+</tr>
+<tr>
+<td>Saved data</td>
+<td>RDS reloaded and identical to the analysis object</td>
+</tr>
+<tr>
+<td>Wrangling example</td>
+<td>4 country-month rows, no duplicate keys, no unmatched lookup rows</td>
+</tr>
+<tr>
+<td>Wrangling totals</td>
+<td>Japan 2,100; Australia 1,850; total 3,950</td>
+</tr>
+<tr>
+<td>Programmatic extraction</td>
+<td>Ordinary <code>$</code>/bracket extraction avoided; one documented <code>.data[[.variable]]</code> exception</td>
+</tr>
+</tbody>
+</table>
+<p>Relevant versions: R 4.6.1 (2026-06-24); tidyverse 2.0.0; dplyr 1.2.1; purrr 1.2.2; readr 2.2.0; ggplot2 4.0.3; ggthemes 5.2.0; estimatr 1.0.6; broom 1.0.13; styler 1.11.0. The complete session information is saved with the example outputs.</p>
+<p><code>modelsummary</code> was not installed in the checked environment. The guide documents its source-backed use, but no newly generated <code>modelsummary</code> table is claimed to have been executed or validated.</p>
+<h2 id="visual-and-browser-checks">Visual and Browser Checks</h2>
+<ul>
+<li>The saved treatment-effect PDF was rendered with Poppler and visually inspected. Its final dimensions are 6.5 × 1.6 inches; the matching PNG uses the same dimensions. Text, interval, zero line, and category label are readable and unclipped.</li>
+<li>The sample-count PNG was visually inspected, including its zero baseline, direct count labels, and axis labels.</li>
+<li>The guide was rendered in the in-app browser at its available narrow viewport. The title, metadata, buttons, contents, table, and code presentation were checked; section navigation and the complete-guide copy button were exercised successfully.</li>
+<li>The base CSS is an exact copy of the existing LaTeX guide's stylesheet. The five guides' CSS values were compared; their small existing differences are documented in the evidence report. Desktop rules are inherited and checked in source; no separate wide-viewport screenshot is claimed.</li>
+<li>Static checks verify local link targets, unique heading IDs, table column consistency, and equality of the copied text to the maintained prompt plus guide. The local package is checked for archive integrity and excludes project history.</li>
+</ul>
+<h2 id="repairs-and-practical-limits">Repairs and Practical Limits</h2>
+<p>The first <code>styler</code> attempt encountered a cache-directory write restriction. Disabling styler's cache for the formatting process resolved it; no global setting or package installation was changed. An initial deprecated <code>across()</code> form in the audit utility was replaced by an explicit function. A Python 3.9 string-formatting issue in the HTML builder was fixed. Markdown pipes inside tables were escaped after browser inspection exposed incorrect cell splitting.</p>
+<p>The first Poppler render reported a missing font configuration and unwritable cache. A temporary fontconfig file using system fonts and a temporary cache resolved this. A temporary loopback-only preview server required normal sandbox escalation and was allowed; no public server or deployment was created.</p>
+<p>Final cleanup identified an unintended <code>Rplots.pdf</code> from automatic printing during batch execution. Plot previews are now explicitly interactive; batch execution writes only the named figure files. The temporary file was removed, and the analysis was rerun to verify that it did not recur.</p>
+<p>The copy fallback is implemented for browsers without clipboard access. The successful clipboard path was exercised in the current browser; the denied-permission path was inspected in source, not forced through a browser permission change. Complete understanding by the human collaborator cannot be mechanically guaranteed; the guide gives a repeatable standard for making that outcome more likely.</p>
+</article>
+  <footer><p>Version 1.0 · Prepared with AI assistance from the supplied Waseda 2026 materials.
+  Confirmed preferences, course-derived defaults, and recommendations are distinguished.</p>
+  <p><a href="index.html">Guide</a> · <a href="evidence.html">Source evidence</a> ·
+  <a href="verification.html">Verification</a> · <a href="PREFERRED_R_STYLE.md" download>Markdown</a></p></footer>
+</main>
+</body>
+</html>

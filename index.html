@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Yusaku Horiuchi's source-based guide to readable R analysis with AI.">
+  <title>My Preferred R Coding Guide</title>
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/guide.css">
+  <script src="assets/guide.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#guide-content">Skip to guide</a>
+<main class="page-shell">
+  <header class="hero">
+    <h1>My Preferred<br>R Coding Guide</h1>
+    <ul class="metadata">
+      <li><strong>Author:</strong> Yusaku Horiuchi</li>
+      <li><strong>Affiliation:</strong> Syde P. Deeb Eminent Scholar in Political Science, Florida State University</li>
+      <li><strong>Created:</strong> October 24, 2026</li>
+      <li><strong>Last revised:</strong> October 24, 2026</li>
+    </ul>
+    <p>AI can do the analysis. The code should still feel like mine—clear enough to understand quickly, inspect confidently, and rerun from start to finish.</p>
+    <div class="hero-actions">
+<button class="button button-primary" type="button" id="copy-guide">Copy Guide + AI Instructions</button>
+<a class="button" href="PREFERRED_R_STYLE.md" download>Download Markdown</a>
+<a class="button" href="preferred_r_coding_guide.zip" download>Download Guide Package</a>
+<span class="copy-status" id="copy-status" role="status" aria-live="polite"></span>
+</div>
+<details class="copy-fallback" id="copy-fallback" hidden><summary>Select and copy manually</summary>
+<textarea id="copy-text" aria-label="Complete guide and AI instructions" readonly></textarea></details>
+  </header>
+  <section class="summary-grid" aria-label="Guide overview">
+<article class="summary-card"><h2>Familiar code, visible decisions</h2>
+<p>Readable sections, consistent tidyverse, inspectable data, and figures that explain the comparison.</p></article>
+<article class="summary-card"><h2>Evidence you can check</h2>
+<p>All 35 supplied R scripts reviewed, plus the course style document and seven Technical Notes.</p></article>
+</section><nav class="contents" aria-label="Contents"><h2>Contents</h2><ol><li><a href="#1-the-goal-code-i-can-immediately-understand">The Goal: Code I Can Immediately Understand</a></li><li><a href="#2-the-core-coding-profile">The Core Coding Profile</a></li><li><a href="#3-every-script-needs-a-purpose-and-a-reading-order">Every Script Needs a Purpose and a Reading Order</a></li><li><a href="#4-formatting-tidyverse-google-and-my-own-profile">Formatting: Tidyverse, Google, and My Own Profile</a></li><li><a href="#5-packages-projects-and-paths">Packages, Projects, and Paths</a></li><li><a href="#6-think-in-tibbles-and-visible-transformations">Think in Tibbles and Visible Transformations</a></li><li><a href="#7-minimize-brackets-and-dollar-extraction">Minimize Brackets and Dollar Extraction</a></li><li><a href="#8-inspect-before-cleaning-and-show-what-changed">Inspect Before Cleaning, and Show What Changed</a></li><li><a href="#9-missing-values-denominators-and-grouping">Missing Values, Denominators, and Grouping</a></li><li><a href="#10-reshape-and-join-without-hiding-the-row-unit">Reshape and Join Without Hiding the Row Unit</a></li><li><a href="#11-factors-and-dates-are-analytical-choices">Factors and Dates Are Analytical Choices</a></li><li><a href="#12-model-code-should-reveal-the-statistical-design">Model Code Should Reveal the Statistical Design</a></li><li><a href="#13-functions-and-repetition-explain-one-case-first">Functions and Repetition: Explain One Case First</a></li><li><a href="#14-prepare-the-plot-data-before-drawing-the-plot">Prepare the Plot Data Before Drawing the Plot</a></li><li><a href="#15-the-default-visual-style">The Default Visual Style</a></li><li><a href="#16-axes-coordinates-and-chart-choices">Axes, Coordinates, and Chart Choices</a></li><li><a href="#17-tables-and-saved-outputs">Tables and Saved Outputs</a></li><li><a href="#18-reproducibility-without-unnecessary-machinery">Reproducibility Without Unnecessary Machinery</a></li><li><a href="#19-what-belongs-only-to-teaching">What Belongs Only to Teaching</a></li><li><a href="#20-the-ai-s-handoff-checklist">The AI's Handoff Checklist</a></li><li><a href="#21-sources-and-supporting-files">Sources and Supporting Files</a></li></ol></nav><article id="guide-content"><h2 id="1-the-goal-code-i-can-immediately-understand">1. The Goal: Code I Can Immediately Understand</h2>
+<p>AI may do the cleaning, wrangling, analysis, and visualization. The resulting R scripts should still feel familiar to me: I should be able to open a script, see what it does, follow every consequential step, inspect the intermediate data, and understand its outputs quickly.</p>
+<p>Optimize for <strong>my comprehension, analytical correctness, and reproducibility</strong>, in that order of presentation—not for the shortest code or the most sophisticated implementation. Correctness remains a requirement: familiar-looking code must never conceal an analytical change.</p>
+<p>This guide translates my explicit requests and Waseda University 2026 teaching materials into an actionable coding profile. It is a guide for working with me, not a claim that there is only one good way to write R.</p>
+<h3 id="how-to-use-this-guide">How to use this guide</h3>
+<ol>
+<li>Give the AI this complete guide and the project's existing scripts, README, and relevant data documentation.</li>
+<li>State the substantive question, expected output, and any project or journal requirements.</li>
+<li>Require readable scripts, inspectable intermediate objects, saved outputs, and a brief verification report.</li>
+<li>Use the <a href="templates/analysis_script.R">script template</a> for a new analysis. For a working example, run <a href="examples/01_readable_analysis.R">the end-to-end demonstration</a> from this guide's root folder.</li>
+</ol>
+<p>The <a href="APPLY_GUIDE.md">application prompt</a> can be pasted into another AI chat. The guide must be available in that chat or project; a reference to a file the AI cannot read is insufficient.</p>
+<h3 id="evidence-and-authority">Evidence and authority</h3>
+<p>The labels below distinguish what was requested from what was inferred:</p>
+<table>
+<thead>
+<tr>
+<th>Label</th>
+<th>Meaning</th>
+<th>How to apply it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Confirmed</strong></td>
+<td>Explicitly requested in the October 24, 2026 request, or recorded as confirmed in the existing R/figure reference</td>
+<td>Follow unless a later explicit instruction or a stronger project requirement applies.</td>
+</tr>
+<tr>
+<td><strong>Course-derived</strong></td>
+<td>A stated preference or repeated pattern in the supplied teaching materials</td>
+<td>Use as this guide's working default; do not claim it has independently become a universal operating rule.</td>
+</tr>
+<tr>
+<td><strong>Recommendation</strong></td>
+<td>An implementation choice added to make the user's goal reliable</td>
+<td>Explain consequential choices. It is not a newly confirmed personal preference.</td>
+</tr>
+<tr>
+<td><strong>Context-specific</strong></td>
+<td>A teaching exercise, optional advanced technique, illustration, or deliberate counterexample</td>
+<td>Apply only in the relevant context.</td>
+</tr>
+</tbody>
+</table>
+<p>The latest explicit task instruction comes first. Next come applicable project and journal requirements, confirmed personal preferences, and the course-derived profile. A necessary exception should be narrow and explained beside the code. This new guide does not itself modify the global operating manual or install instructions in other projects.</p>
+<p>The source audit covers <strong>all 35 <code>.R</code> files, including two revised versions, ten paired bad/better visualization demonstrations, and one screenshot copy</strong>. It also examines the course style document, the workflow handout, and seven substantive Technical Notes. The <a href="evidence.html">evidence report</a> records limitations and conflicting examples; the archive inventory preserves file names and checksums. The course programs were read and parsed, not all executed against their original datasets or live websites.</p>
+<h2 id="2-the-core-coding-profile">2. The Core Coding Profile</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Preferred behavior</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Purpose</td>
+<td>Every script says <strong>“What this code is about”</strong> near the top</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>Navigation</td>
+<td>Use RStudio section comments, created with Insert Section when editing interactively</td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>Data work</td>
+<td>Use tidyverse consistently; avoid ordinary <code>[]</code>, <code>[[]]</code>, and <code>$</code> extraction where a clear tidyverse alternative exists</td>
+<td>Confirmed; <code>[[]]</code> preference is the natural extension of avoiding bracket extraction</td>
+</tr>
+<tr>
+<td>Formatting</td>
+<td>Follow the tidyverse style guide, use <code>styler</code>, and apply compatible Google guidance</td>
+<td>Confirmed; conflicts are resolved explicitly below</td>
+</tr>
+<tr>
+<td>Pipes</td>
+<td>Native <code>|&gt;</code> in new scripts; preserve an established legacy <code>%&gt;%</code> style when maintaining it</td>
+<td>Existing reference and course-derived</td>
+</tr>
+<tr>
+<td>Structure</td>
+<td>Explicit package loading, relative paths, small readable steps, useful comments</td>
+<td>Existing reference and course-derived</td>
+</tr>
+<tr>
+<td>Intermediate objects</td>
+<td>Make the data used for a figure or model visible and inspectable</td>
+<td>Course-derived</td>
+</tr>
+<tr>
+<td>Static figures</td>
+<td>Start from <code>theme_few()</code></td>
+<td>Confirmed</td>
+</tr>
+<tr>
+<td>Publication figures</td>
+<td>Readable at final size; direct identification; compact layout; titles in manuscript captions</td>
+<td>Previously confirmed</td>
+</tr>
+<tr>
+<td>Completion</td>
+<td>Format, run from a clean session, inspect saved outputs, and report actual verification</td>
+<td>Existing reference and course-derived</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-every-script-needs-a-purpose-and-a-reading-order">3. Every Script Needs a Purpose and a Reading Order</h2>
+<p><strong>Confirmed / course-derived.</strong> Start with single-<code>#</code> comments. Do not surround the opening header with decorative rules. State the purpose in substantive language, not merely “data analysis.” Name the inputs, outputs, unit of observation, and important scope choices when they help the reader.</p>
+<pre><code class="language-r"># Survey project: prepare the analysis sample
+# What this code is about: Clean responses, compare treatment groups,
+# and save an estimate plot that can be checked against the results table.
+# Unit of observation: One survey respondent.
+# Inputs: data/raw/responses.csv
+# Outputs: data/derived/analysis_data.rds; figures/treatment_effect.pdf
+# Author: Yusaku Horiuchi, with AI assistance
+# Last updated: YYYY-MM-DD
+</code></pre>
+<p>Use truthful author and date information. The template's placeholders must be completed before handoff. Do not claim that I personally wrote or verified AI-produced code.</p>
+<p>Use recognizable stages:</p>
+<pre><code class="language-r"># Initial settings --------------------------------------------------------
+# Read data ---------------------------------------------------------------
+# Inspect the original data -----------------------------------------------
+# Clean and prepare variables ---------------------------------------------
+# Check the analysis sample -----------------------------------------------
+# Summarize the data -------------------------------------------------------
+# Estimate models ---------------------------------------------------------
+# Make figures ------------------------------------------------------------
+# Save outputs ------------------------------------------------------------
+# Verification ------------------------------------------------------------
+</code></pre>
+<p>Adapt these headings to the script. A tiny script does not need ten empty sections. Headings should describe the work: “Check unmatched country names” is more useful than “Step 7.”</p>
+<p>RStudio's <strong>Insert Section</strong> shortcut is <strong>Cmd + Shift + R on macOS</strong> and <strong>Ctrl + Shift + R on Windows/Linux</strong>. A comment ending with at least four dashes is recognized as a section. When an AI writes the file directly, it should produce this same syntax; it should not pretend to have pressed a keyboard shortcut. See the <a href="https://docs.posit.co/ide/user/ide/guide/code/code-sections.html">official RStudio documentation</a>.</p>
+<p>Keep the narrative visible from top to bottom. Put a helper function before its first use, under a descriptive heading. Avoid sourcing a chain of obscure helpers merely to perform a short analysis.</p>
+<h2 id="4-formatting-tidyverse-google-and-my-own-profile">4. Formatting: Tidyverse, Google, and My Own Profile</h2>
+<p><strong>Confirmed / course-derived.</strong> Use two spaces for indentation, <code>&lt;-</code> for object assignment, double quotes for strings, spaces around ordinary operators, and one main operation per line. Break long calls across lines, with one significant argument per line and the closing parenthesis on its own line. Aim for about 80 characters, while keeping unavoidable paths and URLs intact. Use complete <code>TRUE</code> and <code>FALSE</code>.</p>
+<p>Use lowercase <code>snake_case</code> for new files, objects, and functions. Prefer meaningful nouns for data objects and verbs for functions: <code>analysis_data</code>, <code>group_summary</code>, <code>treatment_model</code>, <code>make_effect_plot()</code>. Preserve original data-column names until a deliberate, documented rename. Existing course names such as <code>US_rank</code>, <code>primes.L</code>, and <code>Figure1.pdf</code> are not new naming defaults.</p>
+<p>These formatting rules follow the <a href="https://style.tidyverse.org/syntax.html">tidyverse syntax guide</a>, interpreted with the source materials' preference for readable steps.</p>
+<h3 id="the-two-external-guides-are-not-identical">The two external guides are not identical</h3>
+<p><a href="https://google.github.io/styleguide/Rguide.html">Google's current R guide</a> is derived from the tidyverse guide but makes several different choices. Literal compliance with both is impossible in those areas.</p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Google-specific convention</th>
+<th>Working profile for this guide</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Function names</td>
+<td><code>BigCamelCase</code></td>
+<td><code>snake_case</code>, matching the course and existing reference</td>
+</tr>
+<tr>
+<td>Function results</td>
+<td>Explicit <code>return()</code></td>
+<td>An obvious final expression is acceptable; use <code>return()</code> for an early exit or when it clarifies the result</td>
+</tr>
+<tr>
+<td>External functions</td>
+<td>Generally qualify with <code>package::function()</code></td>
+<td>Load core packages at the top; qualify ambiguous or occasional functions explicitly</td>
+</tr>
+<tr>
+<td>Custom argument names</td>
+<td>Not the course's dot-prefix convention</td>
+<td>Use descriptive dot-prefixed arguments where they help distinguish inputs from columns</td>
+</tr>
+</tbody>
+</table>
+<p>This is a <strong>course-matched interpretation</strong>, not a declaration of complete Google compliance. The compatible Google principles include using <code>styler</code>, avoiding <code>attach()</code>, and avoiding right-hand assignment. If a project explicitly requires strict Google style, record that exception and use its full convention consistently. Do not silently switch naming or namespace styles halfway through a script.</p>
+<h3 id="use-styler-then-read-the-result">Use <code>styler</code>, then read the result</h3>
+<p>In RStudio, use <strong>Addins → Style active file</strong> or <strong>Style selection</strong>. For a specific saved script:</p>
+<pre><code class="language-r">styler::style_file(&quot;scripts/01_clean_data.R&quot;)
+</code></pre>
+<p>Format only the files being worked on unless broader reformatting is requested. Review the changes and rerun the script. <code>styler</code> improves formatting; it does not verify the estimand, sample, joins, missing-data decisions, plotting choices, or compliance with this personal profile. It does not automatically rewrite all base R as tidyverse. See the <a href="https://styler.r-lib.org/">styler documentation</a>.</p>
+<h2 id="5-packages-projects-and-paths">5. Packages, Projects, and Paths</h2>
+<p><strong>Course-derived / existing reference.</strong> Load the packages needed for the script near the beginning, with unquoted names:</p>
+<pre><code class="language-r">library(tidyverse)
+library(ggthemes)
+library(estimatr)
+</code></pre>
+<p>Do not add packages just because they are familiar to the AI. For a function outside the core workflow, <code>broom::tidy()</code> or <code>dplyr::select()</code> can make its origin clear and prevent a conflict. The course's introductory namespace restriction does not prohibit useful namespace qualification in research code.</p>
+<p>Installation belongs in a separate setup step. The workflow handout expresses a strong preference for manual installation through RStudio's Packages pane. Do not place <code>install.packages()</code> or automatic update logic in an ordinary analysis script. Explain a missing dependency rather than changing the environment invisibly.</p>
+<p>Open the project through its <code>.Rproj</code> file and work from the project root. Use forward slashes and relative paths. Use <code>file.path()</code> when assembling components. Avoid <code>setwd()</code> pointing to a personal computer, absolute Dropbox paths, <code>file.choose()</code>, and reliance on a previously restored <code>.RData</code> workspace.</p>
+<p>Preserve raw/received data. Put derived data, tables, and figures in their intended folders. Keep stable, descriptive filenames and consistent numbering. When adding a new analytical layer, preserve existing scripts and use a new clearly numbered script unless an in-place revision was requested.</p>
+<p>For classroom materials, use the supplied folders or the manual folder-creation instructions. In research code, explicit directory creation can be reasonable; the classroom restriction on <code>dir.create()</code> is not universal.</p>
+<h2 id="6-think-in-tibbles-and-visible-transformations">6. Think in Tibbles and Visible Transformations</h2>
+<p><strong>Confirmed / course-derived.</strong> Prefer the tidyverse vocabulary throughout ordinary rectangular-data work:</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Preferred tools</th>
+<th>Make explicit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read/write</td>
+<td><code>read_csv()</code>, <code>read_rds()</code>, <code>write_csv()</code>, <code>write_rds()</code></td>
+<td>Types, missing codes, filenames</td>
+</tr>
+<tr>
+<td>Keep rows/columns</td>
+<td><code>filter()</code>, <code>select()</code>, <code>slice_*()</code></td>
+<td>Conditions, selected fields, ordering</td>
+</tr>
+<tr>
+<td>Create/rename</td>
+<td><code>mutate()</code>, <code>rename()</code>, <code>relocate()</code></td>
+<td>Definitions and units</td>
+</tr>
+<tr>
+<td>Count/summarize</td>
+<td><code>count()</code>, <code>group_by()</code>, <code>summarise()</code></td>
+<td>Group, denominator, missing handling</td>
+</tr>
+<tr>
+<td>Reshape</td>
+<td><code>pivot_longer()</code>, <code>pivot_wider()</code></td>
+<td>The new row unit and keys</td>
+</tr>
+<tr>
+<td>Combine</td>
+<td><code>left_join()</code>, <code>anti_join()</code>, <code>bind_rows()</code></td>
+<td>Keys and row retention</td>
+</tr>
+<tr>
+<td>Strings</td>
+<td><code>str_detect()</code>, <code>str_replace()</code>, <code>str_trim()</code>, <code>str_c()</code></td>
+<td>Matching and replacement rules</td>
+</tr>
+<tr>
+<td>Categories</td>
+<td><code>fct_relevel()</code>, <code>fct_reorder()</code>, <code>fct_recode()</code></td>
+<td>Reference, display order, labels</td>
+</tr>
+<tr>
+<td>Dates</td>
+<td><code>ymd()</code>, <code>mdy()</code>, <code>make_date()</code>, <code>year()</code>, <code>month()</code></td>
+<td>Format, fiscal/calendar interpretation</td>
+</tr>
+<tr>
+<td>Repetition</td>
+<td>A readable function with <code>map()</code> and <code>list_rbind()</code></td>
+<td>Input and output of one iteration</td>
+</tr>
+</tbody>
+</table>
+<p>Keep a pipeline focused on one understandable transformation. Split it when the unit of observation changes, an important check is needed, or the result feeds multiple outputs. Do not invent a rigid maximum number of pipe steps.</p>
+<pre><code class="language-r">analysis_data &lt;- raw_data |&gt;
+  filter(year &gt;= 2000) |&gt;
+  mutate(country = str_trim(country))
+
+country_summary &lt;- analysis_data |&gt;
+  group_by(country) |&gt;
+  summarise(
+    n_observed = sum(!is.na(outcome)),
+    mean_outcome = mean(outcome, na.rm = TRUE),
+    .groups = &quot;drop&quot;
+  )
+</code></pre>
+<p>This short example assumes each country has an observed outcome. In an actual dataset, check that condition or handle an all-missing group explicitly. A pipe is not a reason to hide data validation.</p>
+<p>Names such as <code>df1</code> and <code>df2</code> are common in short teaching exercises. In a longer research script, use names that expose purpose and stage. Avoid both anonymous chains and dozens of disposable objects with no meaningful distinction.</p>
+<h2 id="7-minimize-brackets-and-dollar-extraction">7. Minimize Brackets and Dollar Extraction</h2>
+<p><strong>Confirmed.</strong> Prefer operations that state what is happening:</p>
+<table>
+<thead>
+<tr>
+<th>Instead of ordinary extraction</th>
+<th>Prefer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>df[df$year &gt;= 2000, ]</code></td>
+<td><code>df |&gt; filter(year &gt;= 2000)</code></td>
+</tr>
+<tr>
+<td><code>df[, c(&quot;country&quot;, &quot;year&quot;)]</code></td>
+<td><code>df |&gt; select(country, year)</code></td>
+</tr>
+<tr>
+<td><code>df$outcome</code></td>
+<td><code>df |&gt; pull(outcome)</code></td>
+</tr>
+<tr>
+<td><code>df$outcome &lt;- ...</code></td>
+<td><code>df &lt;- df |&gt; mutate(outcome = ...)</code></td>
+</tr>
+<tr>
+<td><code>x[1]</code> when the first value is intended</td>
+<td><code>first(x)</code></td>
+</tr>
+<tr>
+<td><code>tables[[&quot;results&quot;]]</code></td>
+<td><code>pluck(tables, &quot;results&quot;)</code></td>
+</tr>
+<tr>
+<td><code>coef(model)[2]</code></td>
+<td>Tidy the model and select the coefficient by its term</td>
+</tr>
+</tbody>
+</table>
+<p><code>select(outcome)</code> returns a one-column data frame; <code>pull(outcome)</code> returns a vector. State which is needed. A filtered <code>pull()</code> is not automatically a scalar: check that exactly one row matches when a single value is required. Use <code>slice()</code> only when row position has a defined meaning; prefer an identifier filter otherwise.</p>
+<p><strong>Necessary exceptions are allowed.</strong> A matrix API, an object without a suitable accessor, or tidy evaluation may require brackets. For a column whose name is supplied as a string, <code>.data[[.variable]]</code> is an established tidyverse pattern inside data-masking contexts. It is different from casually extracting columns with <code>df$column</code>. Do not contort the code to remove it. Explain unfamiliar syntax once, close to the function. See <a href="https://dplyr.tidyverse.org/articles/programming.html">Programming with dplyr</a>.</p>
+<p>The archive itself contains bracket and dollar examples, particularly in R-language and programming lessons. Their presence does not override the current request to minimize them.</p>
+<h2 id="8-inspect-before-cleaning-and-show-what-changed">8. Inspect Before Cleaning, and Show What Changed</h2>
+<p><strong>Course-derived, with recommended checks.</strong> Inspect <code>glimpse()</code>, <code>count()</code>, <code>distinct()</code>, and selected rows before deciding how to clean. Know what one row represents. Check identifiers before treating repeated rows as duplicates.</p>
+<p>For each consequential recode, make the original and cleaned values easy to compare:</p>
+<pre><code class="language-r">cleaned_data &lt;- raw_data |&gt;
+  mutate(
+    state_original = state,
+    state = str_trim(state),
+    state = case_when(
+      state == &quot;D.C.&quot; ~ &quot;District of Columbia&quot;,
+      state == &quot;Lousiana&quot; ~ &quot;Louisiana&quot;,
+      TRUE ~ state
+    )
+  )
+
+cleaned_data |&gt;
+  count(state_original, state, sort = TRUE)
+</code></pre>
+<p>These particular corrections come from the mass-shooting exercise. They illustrate an explicit correction table; do not apply them blindly to unrelated data. Avoid fuzzy matching, automatic deduplication, imputation, or outlier deletion unless the task and source documentation justify them.</p>
+<p>Use explicit readr missing codes and column types when needed. Identifiers with leading zeros are often character values. <code>show_col_types = FALSE</code> hides a type message, not parsing problems; inspect <code>problems()</code> for imported text data. Keep the original text when a parsing decision is consequential.</p>
+<p>Use <code>str_*()</code> for text. Explain unfamiliar regex patterns in plain language and check matched values. Distinguish <code>str_replace()</code> from <code>str_replace_all()</code>. Do not treat “at least 100” or “100–200” as an exact value of 100 simply because <code>parse_number()</code> can extract it. A parser is not a substantive coding rule.</p>
+<p>Normalize new names deliberately. Backticks are appropriate when referring to incoming names with spaces or symbols. Human-readable figure labels belong in labels or a mapping table; they need not become awkward working column names.</p>
+<h2 id="9-missing-values-denominators-and-grouping">9. Missing Values, Denominators, and Grouping</h2>
+<p><strong>Course-derived, with recommended checks.</strong> Use <code>is.na()</code>; never compare a value to <code>NA</code> with <code>==</code> or <code>!=</code>. Distinguish true missing values, literal strings such as <code>&quot;NA&quot;</code>, and meaningful zeroes. Do not convert all missing values to zero.</p>
+<p>Apply <code>drop_na()</code> to the columns required for the particular analysis. A blanket <code>drop_na()</code> can remove observations because of irrelevant fields. Report the number of rows retained and excluded. Make the denominator explicit when calculating shares or means.</p>
+<p><code>na.rm = TRUE</code> is an analytical choice, not an automatic fix. If a whole group is missing, <code>sum(..., na.rm = TRUE)</code> returns zero and <code>mean(..., na.rm = TRUE)</code> returns <code>NaN</code>. Preserve the distinction between “nothing observed” and “observed zero.”</p>
+<pre><code class="language-r">group_summary &lt;- cleaned_data |&gt;
+  group_by(group) |&gt;
+  summarise(
+    n_rows = n(),
+    n_observed = sum(!is.na(outcome)),
+    mean_outcome = if (all(is.na(outcome))) {
+      NA_real_
+    } else {
+      mean(outcome, na.rm = TRUE)
+    },
+    .groups = &quot;drop&quot;
+  )
+</code></pre>
+<p>Understand the difference between <code>group_by() |&gt; mutate()</code> (retains rows) and <code>group_by() |&gt; summarise()</code> (collapses rows). End grouping when it has served its purpose: use <code>.groups = &quot;drop&quot;</code> in a summary, or <code>ungroup()</code> after grouped mutations. Do not add redundant <code>ungroup()</code> after every operation without understanding the result.</p>
+<p>For a top-five result <strong>within each year</strong>, explicitly group by year at the ranking step. Removing every group and then taking five rows gives a global ranking. Decide how ties should be handled; <code>slice_max()</code> can return more than <code>n</code> rows by default. <code>reframe()</code> is useful for multiple results per group and returns ungrouped data; it is not a reason to replace every simple summary.</p>
+<h2 id="10-reshape-and-join-without-hiding-the-row-unit">10. Reshape and Join Without Hiding the Row Unit</h2>
+<p><strong>Course-derived / recommendation.</strong> Before and after <code>pivot_longer()</code> or <code>pivot_wider()</code>, state what one row represents and check the relevant key. Choose columns explicitly or use a deliberate helper such as <code>starts_with()</code> or <code>all_of()</code>. Avoid selecting by position when column order can change.</p>
+<p><code>values_drop_na = TRUE</code> removes missing cells during reshaping. Use it only when those missing cells should not remain as observations. <code>fill()</code> is appropriate for carried-down headings in an administrative table; it is not a general imputation rule. Remove subtotal and total rows deliberately to avoid double counting. In fiscal-year data, document how October–December map to calendar years rather than copying the course's year constants.</p>
+<p>For a join, state the key and intended relationship. The course repeatedly checks unmatched labels with <code>anti_join()</code> before joining. Make that check visible:</p>
+<pre><code class="language-r">unmatched &lt;- observations |&gt;
+  anti_join(country_lookup, by = &quot;country&quot;)
+
+duplicate_keys &lt;- country_lookup |&gt;
+  count(country) |&gt;
+  filter(n &gt; 1)
+
+unmatched
+duplicate_keys
+
+stopifnot(nrow(unmatched) == 0, nrow(duplicate_keys) == 0)
+
+joined_data &lt;- observations |&gt;
+  left_join(
+    country_lookup,
+    by = &quot;country&quot;,
+    relationship = &quot;many-to-one&quot;,
+    na_matches = &quot;never&quot;
+  )
+
+stopifnot(nrow(joined_data) == nrow(observations))
+</code></pre>
+<p>This example assumes every observation should match one lookup row. If unmatched rows are legitimate, retain and explain them instead of imposing this assertion. <code>relationship</code> and <code>na_matches</code> make important join assumptions executable; they are recommended safeguards rather than literal course syntax. See the <a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">dplyr join reference</a>.</p>
+<p>A map can have many polygon vertices for one geographic identifier. Repeated polygon keys are not automatically errors. Keep the full map with a suitable <code>left_join()</code>, and check that the <strong>summary being joined to it</strong> has the intended key. An inner join can silently remove geographic units.</p>
+<h2 id="11-factors-and-dates-are-analytical-choices">11. Factors and Dates Are Analytical Choices</h2>
+<p><strong>Course-derived.</strong> Use <code>fct_relevel()</code> for a reference or deliberate order, <code>fct_reorder()</code> for ordering by a numeric quantity, and <code>fct_recode()</code> for changing labels. Check the result with <code>count()</code> or <code>levels()</code> after <code>pull()</code>. Do not let alphabetical ordering choose the reference group accidentally.</p>
+<p>The values inside a factor are stored as integers. Do not use <code>as.numeric(factor_value)</code> as if it recovered the original numeric data. Treat explicit conversion to factor positions for plotting as a documented exception.</p>
+<p>Use date parsers that match the source (<code>mdy()</code>, <code>dmy()</code>, or <code>ymd()</code>). Check failed parsing and date ranges. Keep dates as dates until presentation. Avoid manual substring extraction when a clear date parser expresses the intended operation, while preserving special parsing needed for unusual source formats.</p>
+<p>Order time-series data before using <code>lag()</code>, <code>first()</code>, <code>last()</code>, or cumulative calculations. Choose factor order, calendar mapping, ranking direction, and treatment baselines because of their meaning, not for a convenient-looking plot.</p>
+<h2 id="12-model-code-should-reveal-the-statistical-design">12. Model Code Should Reveal the Statistical Design</h2>
+<p><strong>Course-derived / recommendation.</strong> Show the outcome, treatment or explanatory variables, reference category, analysis sample, estimator, uncertainty method, weights, and clustering where applicable. These decisions come from the research design; a style guide cannot choose them.</p>
+<p>The modeling precept uses <code>estimatr::lm_robust()</code> and tidies its output before plotting. Preserve that readable sequence where the model is appropriate. Do not substitute robust standard errors, a different estimator, a different sample, or a different confidence level as a cosmetic improvement.</p>
+<pre><code class="language-r">treatment_model &lt;- lm_robust(
+  outcome ~ treatment,
+  data = analysis_data,
+  se_type = &quot;HC2&quot;,
+  alpha = 0.05
+)
+
+model_results &lt;- broom::tidy(treatment_model) |&gt;
+  select(term, estimate, std.error, conf.low, conf.high, p.value)
+
+model_results
+</code></pre>
+<p>Here HC2 and 95% intervals are illustrative choices, made explicit. They are not universal methodological defaults. Use <code>broom::tidy()</code> or the model's documented tidier rather than extracting an unexplained coefficient position.</p>
+<p>For figures, identify the intended terms by name. Removing an intercept is appropriate only when the figure should show contrasts rather than the baseline. Check that all intended terms are present. Label terms through an explicit mapping; do not classify every unfamiliar coefficient as a second treatment category using a catch-all <code>if_else()</code>.</p>
+<p>Keep several explicit model calls if they are easiest to read. Only after one model is understood should a helper or repeated-model workflow replace repetition. Display a formula assembled from strings before fitting it. Keep the sample size and exclusions available for each specification.</p>
+<p>A subgroup difference needs an appropriate comparison or interaction analysis; different significance levels alone do not establish a difference. This is a methodological safeguard, not a coding preference inferred from the class exercise.</p>
+<h2 id="13-functions-and-repetition-explain-one-case-first">13. Functions and Repetition: Explain One Case First</h2>
+<p><strong>Course-derived.</strong> Custom functions should solve a concrete repetition problem. Start from a working, inspectable single case, then wrap that logic in a short named function. Explain its input, output, and any consequential assumption. Use simple <code>if</code>/<code>else</code> checks with informative errors when needed.</p>
+<p>The course explicitly describes dot-prefixed input names as a useful personal convention: <code>.file</code>, <code>.universities</code>, <code>.vars</code>, <code>.year</code>, and <code>.limits</code>. Prefer this pattern for new custom analytical helpers when it clarifies the distinction between arguments and data columns. It is not perfectly consistent in the source, and it is not a general tidyverse rule. Use <code>.dataframe</code> rather than <code>.data</code> for a custom data argument when the <code>.data</code> pronoun is also needed.</p>
+<pre><code class="language-r"># Return one row per group with its number of observed outcomes.
+count_observed &lt;- function(.dataframe, .group, .outcome) {
+  .dataframe |&gt;
+    group_by({{ .group }}) |&gt;
+    summarise(
+      n_observed = sum(!is.na({{ .outcome }})),
+      .groups = &quot;drop&quot;
+    )
+}
+
+count_observed(analysis_data, treatment, outcome)
+</code></pre>
+<p><code>{{ .group }}</code> means that the argument is supplied as an unquoted column name. If a character column name is needed instead, use the documented <code>.data[[.variable]]</code> pattern. Do not introduce <code>eval(parse())</code>, intricate quasiquotation, or dynamic object creation when a plain function or named list would be clearer.</p>
+<p>For several input files, make a visible file list, test the function on one file, and then use <code>map()</code> followed by <code>list_rbind()</code>. Add a source filename column where it helps trace the rows. The course already presents this two-step alternative; current <a href="https://purrr.tidyverse.org/reference/map_dfr.html">purrr documentation</a> recommends it over the superseded <code>map_dfr()</code> family. Existing working <code>map_dfr()</code> code need not be rewritten without a reason.</p>
+<p>A straightforward loop remains acceptable when it is easier to understand. If indexing is necessary, use <code>seq_along()</code> rather than <code>1:length()</code>. Do not turn the preference for tidyverse into an absolute ban on base R functions such as <code>mean()</code>, <code>sum()</code>, <code>lm()</code>, <code>file.path()</code>, or <code>stopifnot()</code>.</p>
+<h2 id="14-prepare-the-plot-data-before-drawing-the-plot">14. Prepare the Plot Data Before Drawing the Plot</h2>
+<p><strong>Course-derived, strongly supported by explicit comments.</strong> Do the relevant transformation first. Inspect the data frame that will be plotted. Then construct the figure.</p>
+<p>For counts or summaries shown as bars, prefer <code>count()</code> or <code>summarise()</code> followed by <code>geom_col()</code>. This makes the bar heights and labels refer to the same visible numbers. Use <code>geom_histogram()</code> for a distribution with an explicit binning decision. Do not replace appropriate statistical geoms indiscriminately.</p>
+<pre><code class="language-r">plot_data &lt;- analysis_data |&gt;
+  count(treatment, name = &quot;n_respondents&quot;)
+
+plot_data
+
+sample_plot &lt;- ggplot(
+  plot_data,
+  aes(x = treatment, y = n_respondents)
+) +
+  geom_col(fill = &quot;gray60&quot;) +
+  geom_text(aes(label = n_respondents), vjust = -0.4) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.10))) +
+  labs(x = NULL, y = &quot;Number of respondents&quot;) +
+  theme_few(base_size = 12)
+</code></pre>
+<p>Put common mappings in <code>ggplot()</code> when several layers share them. Use layer-specific <code>data =</code> and <code>aes()</code> when the data or mapping differs. Name <code>mapping =</code> if the argument position could be mistaken. Put fixed settings such as <code>color = &quot;gray60&quot;</code> outside <code>aes()</code>; put variable-based aesthetics inside it.</p>
+<p>Layer order matters. Draw background bands and reference elements before focal data when appropriate, then labels. Use <code>annotate()</code> or a dedicated annotation tibble for a single note or rectangle; do not unintentionally draw it once for every data row. The Technical Notes document this exact source of confusing opacity and overprinted text.</p>
+<h2 id="15-the-default-visual-style">15. The Default Visual Style</h2>
+<p><strong>Confirmed.</strong> Begin static ggplot figures with <code>theme_few()</code>. Add plot-specific <code>theme()</code> adjustments <strong>after</strong> the complete theme. Its documented default base size is 12 points; see <a href="https://jrnold.github.io/ggthemes/reference/theme_few.html">ggthemes</a>. The appropriate delivered size depends on the final physical figure size.</p>
+<p>Prefer a small, purposeful palette. Gray works well for context and a single accent for the focal comparison. Use accessible colors and non-color identification where needed. Do not add a gradient, an extra legend, or decorative color merely because a plotting function supports it.</p>
+<p>Prefer direct labels, meaningful axis labels, or facet headings to legends. Remove a legend only when the reader can still identify what each visual element means. A continuous map scale may need a legend; that is a useful exception, not a failure.</p>
+<p>Use small multiples when they make comparisons easier. Share scales when magnitude comparison is central. <code>scales = &quot;free_y&quot;</code> is a deliberate choice for within-panel patterns; it weakens direct cross-panel magnitude comparisons and should be explained.</p>
+<p>For publication figures, put the title, estimand, uncertainty definition, sample, source, and methodological notes in the manuscript caption. Do not embed a large title or subtitle in the graphic. Standalone teaching, slides, dashboards, and animations may need a title or a visible date: the course's title-bearing figures are context-specific.</p>
+<p>Choose physical width and height for the intended placement. Keep text approximately the manuscript text size or only slightly smaller after scaling. Avoid excess blank space without clipping labels or intervals. A large RStudio preview is not evidence that a figure will be readable in a paper.</p>
+<h2 id="16-axes-coordinates-and-chart-choices">16. Axes, Coordinates, and Chart Choices</h2>
+<p><strong>Course-derived / previously confirmed.</strong> Use <code>coord_cartesian()</code> for zooming when data should remain in statistical calculations. Scale limits can discard observations and change a smooth, histogram, or boxplot. Define limits, breaks, and labels in one scale call for an aesthetic; adding another scale replaces the earlier one.</p>
+<p>The fact that a plot is technically valid does not make it substantively helpful. The Day 5 paired examples support these choices:</p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Preferred response</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Truncated bar baseline</td>
+<td>Start bars at zero</td>
+</tr>
+<tr>
+<td>Many crossing lines and a crowded legend</td>
+<td>Label endpoints, highlight a focal series, or facet</td>
+</tr>
+<tr>
+<td>Pie slices that require precise comparison</td>
+<td>Use sorted bars or points</td>
+</tr>
+<tr>
+<td>Unrelated dual y-axes</td>
+<td>Separate clearly labeled panels</td>
+</tr>
+<tr>
+<td>Overplotted scatter labels</td>
+<td>Reduce overplotting and label selected observations</td>
+</tr>
+<tr>
+<td>Raw-count map confounded by population</td>
+<td>Use a meaningful rate when the question is comparative risk</td>
+</tr>
+<tr>
+<td>Stacked areas without a common baseline</td>
+<td>Use small multiples when comparing component trends</td>
+</tr>
+<tr>
+<td>Difficult Likert comparisons</td>
+<td>Consider a diverging arrangement with explicit neutral handling</td>
+</tr>
+<tr>
+<td>Grouped bars for change</td>
+<td>Consider connected points or a slope display</td>
+</tr>
+<tr>
+<td>Decorative 3D bars</td>
+<td>Use a clear two-dimensional chart</td>
+</tr>
+</tbody>
+</table>
+<p>A count map may still answer a total-burden question. A diverging Likert figure is one option, not a universal requirement. The decision should follow the comparison the reader needs to make.</p>
+<p>For estimates, show points and uncertainty intervals with a clear null/reference line. For ranks, choose the direction deliberately. For polygons, use the correct group identifier and coordinate system. For geographic data, do not treat longitude and latitude as arbitrary Cartesian coordinates.</p>
+<h2 id="17-tables-and-saved-outputs">17. Tables and Saved Outputs</h2>
+<p><strong>Previously confirmed / course-derived.</strong> Keep table construction reproducible. The modeling precept uses <code>modelsummary()</code> with meaningful coefficient labels, selected fit statistics, and notes identifying robust standard errors. Preserve this explicit control rather than relying on an opaque default table.</p>
+<p>For new publication tables where manuscript conventions support it, use <code>threeparttable</code>, <code>tabularx</code> spanning <code>\textwidth</code>, <code>booktabs</code>, no vertical rules, caption/label above, and flush-left notes below. Prefer <code>[!t]</code>, a 1.25 baseline stretch, <code>@{\extracolsep{\fill}}</code>, and modest section spacing where appropriate. Use estimates on one row with robust standard errors beneath when that is the specified uncertainty method. Include concise useful fit statistics, and use <code>\num{}</code> when <code>siunitx</code> is loaded.</p>
+<p>Keep coding definitions, reference groups, sample, uncertainty method, and significance notation in the notes. Do not invent significance stars or a robust specification just to mimic a classroom table. Do not hand-edit numerical results in exported LaTeX. If a table is too wide, revise structure or labels before shrinking it to unreadable size.</p>
+<p>Save a named plot explicitly:</p>
+<pre><code class="language-r">ggsave(
+  filename = &quot;figures/treatment_effect.pdf&quot;,
+  plot = effect_plot,
+  width = 6.5,
+  height = 3,
+  units = &quot;in&quot;
+)
+</code></pre>
+<p>These dimensions are examples, not a fixed rule. Prefer vector PDF for LaTeX manuscripts; save a matching PNG when needed for previews or web use. Keep counterpart physical dimensions consistent. Specifying <code>plot =</code> prevents an intervening diagnostic plot from being exported accidentally; see <a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggsave()</a>.</p>
+<h2 id="18-reproducibility-without-unnecessary-machinery">18. Reproducibility Without Unnecessary Machinery</h2>
+<p><strong>Course-derived / recommendation.</strong> A completed script should run from a clean R session, top to bottom, with documented inputs. Test the script as delivered. Restart R or run <code>Rscript --vanilla</code>; do not mistake <code>rm(list = ls())</code> for a complete session reset.</p>
+<p>Use <code>set.seed()</code> before simulation, sampling, or other relevant random operations; use a supported local seed for label placement or jitter when available. Record meaningful R and package versions. Preserve the project's existing dependency-management method instead of adding a new framework automatically.</p>
+<p>Do not globally suppress warnings. Inspect import, model, and plotting warnings. Narrow suppression is justified only for a known, explained condition after confirming the result. The course contains suppressed parsing warnings and deliberately failing demonstrations; those are not general research defaults.</p>
+<p>For scraped or downloaded data, keep a reproducible snapshot when permitted, with source and retrieval date. Do not rely on a live HTML table remaining at index 3 forever. Validate its column names and content. Separate data acquisition from analysis when network changes would otherwise make reruns unstable.</p>
+<p>Use targeted checks for important assumptions: unique respondent IDs, join cardinality, allowed categories, missing values, expected model terms, and agreement between plotted estimates and saved results. Avoid a large testing framework for a small one-off analysis unless the project needs it.</p>
+<p>Open saved figures and tables. Check labels, legend necessity, clipping, scale direction, uncertainty, number formatting, and final-size legibility. Confirm that the caption describes the actual exported plot.</p>
+<h2 id="19-what-belongs-only-to-teaching">19. What Belongs Only to Teaching</h2>
+<p>Do not copy the following into every research script merely because they appear in this archive:</p>
+<ul>
+<li>Course/day/precept titles and <code>Name: xxx</code> / <code>Date: xxx</code> placeholders.</li>
+<li>One script per 100-minute precept and the literal “End of Precept” heading.</li>
+<li>Restrictions to functions already taught, or a universal prohibition on <code>dir.create()</code>.</li>
+<li>Multiple alternative solutions, deliberate errors, incomplete exercises, or “bad” figures.</li>
+<li>Repeated scraping inside a teaching function, fixed HTML table indices, or example-specific recoding assumptions.</li>
+<li>The 11-by-8-inch classroom figure dimensions, all-uppercase input fields, or mixed legacy filenames.</li>
+<li>Every use of <code>theme_minimal()</code>, <code>theme_void()</code>, <code>theme_light()</code>, <code>$</code>, or brackets.</li>
+<li>Advanced optional grouped-model, tidy-evaluation, interactive-map, or animation workflows as the default for a simple task.</li>
+</ul>
+<p>Retain their underlying lessons: structure, explicit choices, inspectability, meaningful comparisons, and clean-session verification.</p>
+<h2 id="20-the-ai-s-handoff-checklist">20. The AI's Handoff Checklist</h2>
+<p>Before delivering work, the AI should be able to answer all of these:</p>
+<ol>
+<li><strong>Purpose:</strong> Does each script explain what it does, its inputs, and its outputs?</li>
+<li><strong>Reading order:</strong> Can I follow the data from import to the final result without hidden transformations?</li>
+<li><strong>Familiar vocabulary:</strong> Is ordinary data work consistently tidyverse, with extraction exceptions explained?</li>
+<li><strong>Sample and coding:</strong> Are exclusions, missing values, denominators, units, reference categories, and consequential recodes visible?</li>
+<li><strong>Joins and grouping:</strong> Are keys, expected relationships, row counts, and the end of grouping checked?</li>
+<li><strong>Models:</strong> Are the formula, sample, estimator, uncertainty method, and plotted terms explicit?</li>
+<li><strong>Figures and tables:</strong> Do they follow the intended publication/teaching context, with readable labels and correct saved content?</li>
+<li><strong>Formatting:</strong> Was <code>styler</code> actually run on the relevant files and the result reviewed?</li>
+<li><strong>Execution:</strong> Did the delivered script actually run in a clean session? What warnings or limitations remain?</li>
+<li><strong>Explanation:</strong> Does the handoff name the files, explain important changes, and point to the intermediate objects I should inspect?</li>
+</ol>
+<p>The handoff should be concise: what changed, where to start reading, what was verified, and any meaningful exception. Do not claim that matching this guide proves I have understood the work. The practical test is whether I can locate and explain each consequential operation with little effort.</p>
+<h2 id="21-sources-and-supporting-files">21. Sources and Supporting Files</h2>
+<p>The primary evidence is the user-supplied <code>waseda_2026.zip</code> snapshot, not a live course folder that may have changed. Specific source paths and line references appear in <a href="evidence.html">the evidence report</a>. The existing personal R/figure reference supplies the previously confirmed publication conventions.</p>
+<ul>
+<li><a href="examples/01_readable_analysis.R">Runnable end-to-end example</a>: synthetic survey data, cleaning, sample accounting, HC2 model, tidy results, and saved figures.</li>
+<li><a href="examples/02_wrangling_and_functions.R">Runnable wrangling and function recipes</a>: reshaping, checked joins, strings, dates, factors, dot-prefixed arguments, and <code>map()</code>.</li>
+<li><a href="templates/analysis_script.R">New-script template</a>: a deliberately incomplete starter, not a validated analysis.</li>
+<li><a href="APPLY_GUIDE.md">AI application prompt</a>: the instruction to accompany this complete guide.</li>
+<li><a href="evidence.html">Source evidence</a> and <a href="verification.html">verification record</a>.</li>
+</ul>
+<p>Official references checked October 24, 2026: <a href="https://google.github.io/styleguide/Rguide.html">Google R guide</a>, <a href="https://style.tidyverse.org/">tidyverse style</a>, <a href="https://styler.r-lib.org/">styler</a>, <a href="https://docs.posit.co/ide/user/ide/guide/code/code-sections.html">RStudio code sections</a>, and the package references linked in the relevant sections. The five existing guides were used as local design references; their specific operational instructions were not treated as instructions for this task.</p>
+</article><script type="application/json" id="guide-text">"# Apply My Preferred R Coding Guide\n\nRead the complete `PREFERRED_R_STYLE.md` supplied with this prompt, together\nwith the project's instructions, README, data documentation, and existing R\nscripts. If the guide is unavailable, obtain it before claiming to follow it.\n\nWrite R code that Yusaku Horiuchi can understand rapidly, as if reading his\nown familiar code. Prioritize transparent analytical choices and readable\nsteps. Preserve the project's established workflow and existing scripts when\nadding a new analytical layer, unless revision in place is requested.\n\nEvery script must begin with a truthful header including **What this code is\nabout**, inputs, outputs, author/AI contribution, and last-updated date. Use\nRStudio section comments such as `# Read data ----`. Use native `|>` in new\ncode, explicit package loading, relative paths, lowercase snake case, and\ntidyverse for ordinary cleaning, wrangling, and visualization. Prefer\n`filter()`, `select()`, `mutate()`, `pull()`, and `pluck()` to ordinary bracket\nor dollar extraction. Explain necessary exceptions, including tidy-evaluation\n`.data[[.variable]]` when appropriate.\n\nPrepare and inspect plotting data before plotting. Prefer `count()` or\n`summarise()` followed by `geom_col()` for summarized bars. Use\n`theme_few()` for static ggplot figures. For publication figures, keep titles\nin captions, prefer direct labels/facets over legends, and inspect typography\nat final size. Save named plots explicitly with physical dimensions.\n\nMake sample exclusions, missing codes, denominators, variable definitions,\ngrouping, join keys, model specifications, uncertainty, and reference groups\nvisible. Use short custom functions only when they simplify real repetition;\nprefer descriptive dot-prefixed input names for the course-matched profile.\nKeep one case understandable before automating it with `map()`.\n\nFollow tidyverse formatting and compatible Google guidance. The complete\nguide documents the conflicts: this profile uses snake-case functions,\nallows an obvious implicit final return, and loads core packages explicitly\ninstead of qualifying every call. Do not call it strict Google compliance.\nDo not copy classroom placeholders, intentional bad examples, or optional\nadvanced workflows as universal requirements. Distinguish confirmed\npreferences, course-derived defaults, and additional recommendations.\n\nRun `styler` on the changed R files, inspect the result, and run the delivered\ncode from a clean session. Perform checks appropriate to consequential\nassumptions and inspect saved outputs. Do not silently change analytical\nchoices, install packages in analysis scripts, suppress all warnings, or\nrewrite unrelated code. Report actual verification, remaining limitations,\nthe files to open, and any meaningful deviation from the guide.\n\nApply this guide to the task I describe next. Do not modify global operating\nrules, publish private data, or install this guide elsewhere just because it\nwas supplied as a task reference.\n\n\n---\n\n# My Preferred R Coding Guide\n\n**Yusaku Horiuchi \u00b7 Created October 24, 2026 \u00b7 Version 1.0**\n\n## 1. The Goal: Code I Can Immediately Understand\n\nAI may do the cleaning, wrangling, analysis, and visualization. The resulting R scripts should still feel familiar to me: I should be able to open a script, see what it does, follow every consequential step, inspect the intermediate data, and understand its outputs quickly.\n\nOptimize for **my comprehension, analytical correctness, and reproducibility**, in that order of presentation\u2014not for the shortest code or the most sophisticated implementation. Correctness remains a requirement: familiar-looking code must never conceal an analytical change.\n\nThis guide translates my explicit requests and Waseda University 2026 teaching materials into an actionable coding profile. It is a guide for working with me, not a claim that there is only one good way to write R.\n\n### How to use this guide\n\n1. Give the AI this complete guide and the project's existing scripts, README, and relevant data documentation.\n2. State the substantive question, expected output, and any project or journal requirements.\n3. Require readable scripts, inspectable intermediate objects, saved outputs, and a brief verification report.\n4. Use the [script template](templates/analysis_script.R) for a new analysis. For a working example, run [the end-to-end demonstration](examples/01_readable_analysis.R) from this guide's root folder.\n\nThe [application prompt](APPLY_GUIDE.md) can be pasted into another AI chat. The guide must be available in that chat or project; a reference to a file the AI cannot read is insufficient.\n\n### Evidence and authority\n\nThe labels below distinguish what was requested from what was inferred:\n\n| Label | Meaning | How to apply it |\n|---|---|---|\n| **Confirmed** | Explicitly requested in the October 24, 2026 request, or recorded as confirmed in the existing R/figure reference | Follow unless a later explicit instruction or a stronger project requirement applies. |\n| **Course-derived** | A stated preference or repeated pattern in the supplied teaching materials | Use as this guide's working default; do not claim it has independently become a universal operating rule. |\n| **Recommendation** | An implementation choice added to make the user's goal reliable | Explain consequential choices. It is not a newly confirmed personal preference. |\n| **Context-specific** | A teaching exercise, optional advanced technique, illustration, or deliberate counterexample | Apply only in the relevant context. |\n\nThe latest explicit task instruction comes first. Next come applicable project and journal requirements, confirmed personal preferences, and the course-derived profile. A necessary exception should be narrow and explained beside the code. This new guide does not itself modify the global operating manual or install instructions in other projects.\n\nThe source audit covers **all 35 `.R` files, including two revised versions, ten paired bad/better visualization demonstrations, and one screenshot copy**. It also examines the course style document, the workflow handout, and seven substantive Technical Notes. The [evidence report](analysis/EVIDENCE.md) records limitations and conflicting examples; the archive inventory preserves file names and checksums. The course programs were read and parsed, not all executed against their original datasets or live websites.\n\n## 2. The Core Coding Profile\n\n| Area | Preferred behavior | Status |\n|---|---|---|\n| Purpose | Every script says **\u201cWhat this code is about\u201d** near the top | Confirmed |\n| Navigation | Use RStudio section comments, created with Insert Section when editing interactively | Confirmed |\n| Data work | Use tidyverse consistently; avoid ordinary `[]`, `[[]]`, and `$` extraction where a clear tidyverse alternative exists | Confirmed; `[[]]` preference is the natural extension of avoiding bracket extraction |\n| Formatting | Follow the tidyverse style guide, use `styler`, and apply compatible Google guidance | Confirmed; conflicts are resolved explicitly below |\n| Pipes | Native `\\|>` in new scripts; preserve an established legacy `%>%` style when maintaining it | Existing reference and course-derived |\n| Structure | Explicit package loading, relative paths, small readable steps, useful comments | Existing reference and course-derived |\n| Intermediate objects | Make the data used for a figure or model visible and inspectable | Course-derived |\n| Static figures | Start from `theme_few()` | Confirmed |\n| Publication figures | Readable at final size; direct identification; compact layout; titles in manuscript captions | Previously confirmed |\n| Completion | Format, run from a clean session, inspect saved outputs, and report actual verification | Existing reference and course-derived |\n\n## 3. Every Script Needs a Purpose and a Reading Order\n\n**Confirmed / course-derived.** Start with single-`#` comments. Do not surround the opening header with decorative rules. State the purpose in substantive language, not merely \u201cdata analysis.\u201d Name the inputs, outputs, unit of observation, and important scope choices when they help the reader.\n\n```r\n# Survey project: prepare the analysis sample\n# What this code is about: Clean responses, compare treatment groups,\n# and save an estimate plot that can be checked against the results table.\n# Unit of observation: One survey respondent.\n# Inputs: data/raw/responses.csv\n# Outputs: data/derived/analysis_data.rds; figures/treatment_effect.pdf\n# Author: Yusaku Horiuchi, with AI assistance\n# Last updated: YYYY-MM-DD\n```\n\nUse truthful author and date information. The template's placeholders must be completed before handoff. Do not claim that I personally wrote or verified AI-produced code.\n\nUse recognizable stages:\n\n```r\n# Initial settings --------------------------------------------------------\n# Read data ---------------------------------------------------------------\n# Inspect the original data -----------------------------------------------\n# Clean and prepare variables ---------------------------------------------\n# Check the analysis sample -----------------------------------------------\n# Summarize the data -------------------------------------------------------\n# Estimate models ---------------------------------------------------------\n# Make figures ------------------------------------------------------------\n# Save outputs ------------------------------------------------------------\n# Verification ------------------------------------------------------------\n```\n\nAdapt these headings to the script. A tiny script does not need ten empty sections. Headings should describe the work: \u201cCheck unmatched country names\u201d is more useful than \u201cStep 7.\u201d\n\nRStudio's **Insert Section** shortcut is **Cmd + Shift + R on macOS** and **Ctrl + Shift + R on Windows/Linux**. A comment ending with at least four dashes is recognized as a section. When an AI writes the file directly, it should produce this same syntax; it should not pretend to have pressed a keyboard shortcut. See the [official RStudio documentation](https://docs.posit.co/ide/user/ide/guide/code/code-sections.html).\n\nKeep the narrative visible from top to bottom. Put a helper function before its first use, under a descriptive heading. Avoid sourcing a chain of obscure helpers merely to perform a short analysis.\n\n## 4. Formatting: Tidyverse, Google, and My Own Profile\n\n**Confirmed / course-derived.** Use two spaces for indentation, `\u003c-` for object assignment, double quotes for strings, spaces around ordinary operators, and one main operation per line. Break long calls across lines, with one significant argument per line and the closing parenthesis on its own line. Aim for about 80 characters, while keeping unavoidable paths and URLs intact. Use complete `TRUE` and `FALSE`.\n\nUse lowercase `snake_case` for new files, objects, and functions. Prefer meaningful nouns for data objects and verbs for functions: `analysis_data`, `group_summary`, `treatment_model`, `make_effect_plot()`. Preserve original data-column names until a deliberate, documented rename. Existing course names such as `US_rank`, `primes.L`, and `Figure1.pdf` are not new naming defaults.\n\nThese formatting rules follow the [tidyverse syntax guide](https://style.tidyverse.org/syntax.html), interpreted with the source materials' preference for readable steps.\n\n### The two external guides are not identical\n\n[Google's current R guide](https://google.github.io/styleguide/Rguide.html) is derived from the tidyverse guide but makes several different choices. Literal compliance with both is impossible in those areas.\n\n| Question | Google-specific convention | Working profile for this guide |\n|---|---|---|\n| Function names | `BigCamelCase` | `snake_case`, matching the course and existing reference |\n| Function results | Explicit `return()` | An obvious final expression is acceptable; use `return()` for an early exit or when it clarifies the result |\n| External functions | Generally qualify with `package::function()` | Load core packages at the top; qualify ambiguous or occasional functions explicitly |\n| Custom argument names | Not the course's dot-prefix convention | Use descriptive dot-prefixed arguments where they help distinguish inputs from columns |\n\nThis is a **course-matched interpretation**, not a declaration of complete Google compliance. The compatible Google principles include using `styler`, avoiding `attach()`, and avoiding right-hand assignment. If a project explicitly requires strict Google style, record that exception and use its full convention consistently. Do not silently switch naming or namespace styles halfway through a script.\n\n### Use `styler`, then read the result\n\nIn RStudio, use **Addins \u2192 Style active file** or **Style selection**. For a specific saved script:\n\n```r\nstyler::style_file(\"scripts/01_clean_data.R\")\n```\n\nFormat only the files being worked on unless broader reformatting is requested. Review the changes and rerun the script. `styler` improves formatting; it does not verify the estimand, sample, joins, missing-data decisions, plotting choices, or compliance with this personal profile. It does not automatically rewrite all base R as tidyverse. See the [styler documentation](https://styler.r-lib.org/).\n\n## 5. Packages, Projects, and Paths\n\n**Course-derived / existing reference.** Load the packages needed for the script near the beginning, with unquoted names:\n\n```r\nlibrary(tidyverse)\nlibrary(ggthemes)\nlibrary(estimatr)\n```\n\nDo not add packages just because they are familiar to the AI. For a function outside the core workflow, `broom::tidy()` or `dplyr::select()` can make its origin clear and prevent a conflict. The course's introductory namespace restriction does not prohibit useful namespace qualification in research code.\n\nInstallation belongs in a separate setup step. The workflow handout expresses a strong preference for manual installation through RStudio's Packages pane. Do not place `install.packages()` or automatic update logic in an ordinary analysis script. Explain a missing dependency rather than changing the environment invisibly.\n\nOpen the project through its `.Rproj` file and work from the project root. Use forward slashes and relative paths. Use `file.path()` when assembling components. Avoid `setwd()` pointing to a personal computer, absolute Dropbox paths, `file.choose()`, and reliance on a previously restored `.RData` workspace.\n\nPreserve raw/received data. Put derived data, tables, and figures in their intended folders. Keep stable, descriptive filenames and consistent numbering. When adding a new analytical layer, preserve existing scripts and use a new clearly numbered script unless an in-place revision was requested.\n\nFor classroom materials, use the supplied folders or the manual folder-creation instructions. In research code, explicit directory creation can be reasonable; the classroom restriction on `dir.create()` is not universal.\n\n## 6. Think in Tibbles and Visible Transformations\n\n**Confirmed / course-derived.** Prefer the tidyverse vocabulary throughout ordinary rectangular-data work:\n\n| Task | Preferred tools | Make explicit |\n|---|---|---|\n| Read/write | `read_csv()`, `read_rds()`, `write_csv()`, `write_rds()` | Types, missing codes, filenames |\n| Keep rows/columns | `filter()`, `select()`, `slice_*()` | Conditions, selected fields, ordering |\n| Create/rename | `mutate()`, `rename()`, `relocate()` | Definitions and units |\n| Count/summarize | `count()`, `group_by()`, `summarise()` | Group, denominator, missing handling |\n| Reshape | `pivot_longer()`, `pivot_wider()` | The new row unit and keys |\n| Combine | `left_join()`, `anti_join()`, `bind_rows()` | Keys and row retention |\n| Strings | `str_detect()`, `str_replace()`, `str_trim()`, `str_c()` | Matching and replacement rules |\n| Categories | `fct_relevel()`, `fct_reorder()`, `fct_recode()` | Reference, display order, labels |\n| Dates | `ymd()`, `mdy()`, `make_date()`, `year()`, `month()` | Format, fiscal/calendar interpretation |\n| Repetition | A readable function with `map()` and `list_rbind()` | Input and output of one iteration |\n\nKeep a pipeline focused on one understandable transformation. Split it when the unit of observation changes, an important check is needed, or the result feeds multiple outputs. Do not invent a rigid maximum number of pipe steps.\n\n```r\nanalysis_data \u003c- raw_data |>\n  filter(year >= 2000) |>\n  mutate(country = str_trim(country))\n\ncountry_summary \u003c- analysis_data |>\n  group_by(country) |>\n  summarise(\n    n_observed = sum(!is.na(outcome)),\n    mean_outcome = mean(outcome, na.rm = TRUE),\n    .groups = \"drop\"\n  )\n```\n\nThis short example assumes each country has an observed outcome. In an actual dataset, check that condition or handle an all-missing group explicitly. A pipe is not a reason to hide data validation.\n\nNames such as `df1` and `df2` are common in short teaching exercises. In a longer research script, use names that expose purpose and stage. Avoid both anonymous chains and dozens of disposable objects with no meaningful distinction.\n\n## 7. Minimize Brackets and Dollar Extraction\n\n**Confirmed.** Prefer operations that state what is happening:\n\n| Instead of ordinary extraction | Prefer |\n|---|---|\n| `df[df$year >= 2000, ]` | `df \\|> filter(year >= 2000)` |\n| `df[, c(\"country\", \"year\")]` | `df \\|> select(country, year)` |\n| `df$outcome` | `df \\|> pull(outcome)` |\n| `df$outcome \u003c- ...` | `df \u003c- df \\|> mutate(outcome = ...)` |\n| `x[1]` when the first value is intended | `first(x)` |\n| `tables[[\"results\"]]` | `pluck(tables, \"results\")` |\n| `coef(model)[2]` | Tidy the model and select the coefficient by its term |\n\n`select(outcome)` returns a one-column data frame; `pull(outcome)` returns a vector. State which is needed. A filtered `pull()` is not automatically a scalar: check that exactly one row matches when a single value is required. Use `slice()` only when row position has a defined meaning; prefer an identifier filter otherwise.\n\n**Necessary exceptions are allowed.** A matrix API, an object without a suitable accessor, or tidy evaluation may require brackets. For a column whose name is supplied as a string, `.data[[.variable]]` is an established tidyverse pattern inside data-masking contexts. It is different from casually extracting columns with `df$column`. Do not contort the code to remove it. Explain unfamiliar syntax once, close to the function. See [Programming with dplyr](https://dplyr.tidyverse.org/articles/programming.html).\n\nThe archive itself contains bracket and dollar examples, particularly in R-language and programming lessons. Their presence does not override the current request to minimize them.\n\n## 8. Inspect Before Cleaning, and Show What Changed\n\n**Course-derived, with recommended checks.** Inspect `glimpse()`, `count()`, `distinct()`, and selected rows before deciding how to clean. Know what one row represents. Check identifiers before treating repeated rows as duplicates.\n\nFor each consequential recode, make the original and cleaned values easy to compare:\n\n```r\ncleaned_data \u003c- raw_data |>\n  mutate(\n    state_original = state,\n    state = str_trim(state),\n    state = case_when(\n      state == \"D.C.\" ~ \"District of Columbia\",\n      state == \"Lousiana\" ~ \"Louisiana\",\n      TRUE ~ state\n    )\n  )\n\ncleaned_data |>\n  count(state_original, state, sort = TRUE)\n```\n\nThese particular corrections come from the mass-shooting exercise. They illustrate an explicit correction table; do not apply them blindly to unrelated data. Avoid fuzzy matching, automatic deduplication, imputation, or outlier deletion unless the task and source documentation justify them.\n\nUse explicit readr missing codes and column types when needed. Identifiers with leading zeros are often character values. `show_col_types = FALSE` hides a type message, not parsing problems; inspect `problems()` for imported text data. Keep the original text when a parsing decision is consequential.\n\nUse `str_*()` for text. Explain unfamiliar regex patterns in plain language and check matched values. Distinguish `str_replace()` from `str_replace_all()`. Do not treat \u201cat least 100\u201d or \u201c100\u2013200\u201d as an exact value of 100 simply because `parse_number()` can extract it. A parser is not a substantive coding rule.\n\nNormalize new names deliberately. Backticks are appropriate when referring to incoming names with spaces or symbols. Human-readable figure labels belong in labels or a mapping table; they need not become awkward working column names.\n\n## 9. Missing Values, Denominators, and Grouping\n\n**Course-derived, with recommended checks.** Use `is.na()`; never compare a value to `NA` with `==` or `!=`. Distinguish true missing values, literal strings such as `\"NA\"`, and meaningful zeroes. Do not convert all missing values to zero.\n\nApply `drop_na()` to the columns required for the particular analysis. A blanket `drop_na()` can remove observations because of irrelevant fields. Report the number of rows retained and excluded. Make the denominator explicit when calculating shares or means.\n\n`na.rm = TRUE` is an analytical choice, not an automatic fix. If a whole group is missing, `sum(..., na.rm = TRUE)` returns zero and `mean(..., na.rm = TRUE)` returns `NaN`. Preserve the distinction between \u201cnothing observed\u201d and \u201cobserved zero.\u201d\n\n```r\ngroup_summary \u003c- cleaned_data |>\n  group_by(group) |>\n  summarise(\n    n_rows = n(),\n    n_observed = sum(!is.na(outcome)),\n    mean_outcome = if (all(is.na(outcome))) {\n      NA_real_\n    } else {\n      mean(outcome, na.rm = TRUE)\n    },\n    .groups = \"drop\"\n  )\n```\n\nUnderstand the difference between `group_by() |> mutate()` (retains rows) and `group_by() |> summarise()` (collapses rows). End grouping when it has served its purpose: use `.groups = \"drop\"` in a summary, or `ungroup()` after grouped mutations. Do not add redundant `ungroup()` after every operation without understanding the result.\n\nFor a top-five result **within each year**, explicitly group by year at the ranking step. Removing every group and then taking five rows gives a global ranking. Decide how ties should be handled; `slice_max()` can return more than `n` rows by default. `reframe()` is useful for multiple results per group and returns ungrouped data; it is not a reason to replace every simple summary.\n\n## 10. Reshape and Join Without Hiding the Row Unit\n\n**Course-derived / recommendation.** Before and after `pivot_longer()` or `pivot_wider()`, state what one row represents and check the relevant key. Choose columns explicitly or use a deliberate helper such as `starts_with()` or `all_of()`. Avoid selecting by position when column order can change.\n\n`values_drop_na = TRUE` removes missing cells during reshaping. Use it only when those missing cells should not remain as observations. `fill()` is appropriate for carried-down headings in an administrative table; it is not a general imputation rule. Remove subtotal and total rows deliberately to avoid double counting. In fiscal-year data, document how October\u2013December map to calendar years rather than copying the course's year constants.\n\nFor a join, state the key and intended relationship. The course repeatedly checks unmatched labels with `anti_join()` before joining. Make that check visible:\n\n```r\nunmatched \u003c- observations |>\n  anti_join(country_lookup, by = \"country\")\n\nduplicate_keys \u003c- country_lookup |>\n  count(country) |>\n  filter(n > 1)\n\nunmatched\nduplicate_keys\n\nstopifnot(nrow(unmatched) == 0, nrow(duplicate_keys) == 0)\n\njoined_data \u003c- observations |>\n  left_join(\n    country_lookup,\n    by = \"country\",\n    relationship = \"many-to-one\",\n    na_matches = \"never\"\n  )\n\nstopifnot(nrow(joined_data) == nrow(observations))\n```\n\nThis example assumes every observation should match one lookup row. If unmatched rows are legitimate, retain and explain them instead of imposing this assertion. `relationship` and `na_matches` make important join assumptions executable; they are recommended safeguards rather than literal course syntax. See the [dplyr join reference](https://dplyr.tidyverse.org/reference/mutate-joins.html).\n\nA map can have many polygon vertices for one geographic identifier. Repeated polygon keys are not automatically errors. Keep the full map with a suitable `left_join()`, and check that the **summary being joined to it** has the intended key. An inner join can silently remove geographic units.\n\n## 11. Factors and Dates Are Analytical Choices\n\n**Course-derived.** Use `fct_relevel()` for a reference or deliberate order, `fct_reorder()` for ordering by a numeric quantity, and `fct_recode()` for changing labels. Check the result with `count()` or `levels()` after `pull()`. Do not let alphabetical ordering choose the reference group accidentally.\n\nThe values inside a factor are stored as integers. Do not use `as.numeric(factor_value)` as if it recovered the original numeric data. Treat explicit conversion to factor positions for plotting as a documented exception.\n\nUse date parsers that match the source (`mdy()`, `dmy()`, or `ymd()`). Check failed parsing and date ranges. Keep dates as dates until presentation. Avoid manual substring extraction when a clear date parser expresses the intended operation, while preserving special parsing needed for unusual source formats.\n\nOrder time-series data before using `lag()`, `first()`, `last()`, or cumulative calculations. Choose factor order, calendar mapping, ranking direction, and treatment baselines because of their meaning, not for a convenient-looking plot.\n\n## 12. Model Code Should Reveal the Statistical Design\n\n**Course-derived / recommendation.** Show the outcome, treatment or explanatory variables, reference category, analysis sample, estimator, uncertainty method, weights, and clustering where applicable. These decisions come from the research design; a style guide cannot choose them.\n\nThe modeling precept uses `estimatr::lm_robust()` and tidies its output before plotting. Preserve that readable sequence where the model is appropriate. Do not substitute robust standard errors, a different estimator, a different sample, or a different confidence level as a cosmetic improvement.\n\n```r\ntreatment_model \u003c- lm_robust(\n  outcome ~ treatment,\n  data = analysis_data,\n  se_type = \"HC2\",\n  alpha = 0.05\n)\n\nmodel_results \u003c- broom::tidy(treatment_model) |>\n  select(term, estimate, std.error, conf.low, conf.high, p.value)\n\nmodel_results\n```\n\nHere HC2 and 95% intervals are illustrative choices, made explicit. They are not universal methodological defaults. Use `broom::tidy()` or the model's documented tidier rather than extracting an unexplained coefficient position.\n\nFor figures, identify the intended terms by name. Removing an intercept is appropriate only when the figure should show contrasts rather than the baseline. Check that all intended terms are present. Label terms through an explicit mapping; do not classify every unfamiliar coefficient as a second treatment category using a catch-all `if_else()`.\n\nKeep several explicit model calls if they are easiest to read. Only after one model is understood should a helper or repeated-model workflow replace repetition. Display a formula assembled from strings before fitting it. Keep the sample size and exclusions available for each specification.\n\nA subgroup difference needs an appropriate comparison or interaction analysis; different significance levels alone do not establish a difference. This is a methodological safeguard, not a coding preference inferred from the class exercise.\n\n## 13. Functions and Repetition: Explain One Case First\n\n**Course-derived.** Custom functions should solve a concrete repetition problem. Start from a working, inspectable single case, then wrap that logic in a short named function. Explain its input, output, and any consequential assumption. Use simple `if`/`else` checks with informative errors when needed.\n\nThe course explicitly describes dot-prefixed input names as a useful personal convention: `.file`, `.universities`, `.vars`, `.year`, and `.limits`. Prefer this pattern for new custom analytical helpers when it clarifies the distinction between arguments and data columns. It is not perfectly consistent in the source, and it is not a general tidyverse rule. Use `.dataframe` rather than `.data` for a custom data argument when the `.data` pronoun is also needed.\n\n```r\n# Return one row per group with its number of observed outcomes.\ncount_observed \u003c- function(.dataframe, .group, .outcome) {\n  .dataframe |>\n    group_by({{ .group }}) |>\n    summarise(\n      n_observed = sum(!is.na({{ .outcome }})),\n      .groups = \"drop\"\n    )\n}\n\ncount_observed(analysis_data, treatment, outcome)\n```\n\n`{{ .group }}` means that the argument is supplied as an unquoted column name. If a character column name is needed instead, use the documented `.data[[.variable]]` pattern. Do not introduce `eval(parse())`, intricate quasiquotation, or dynamic object creation when a plain function or named list would be clearer.\n\nFor several input files, make a visible file list, test the function on one file, and then use `map()` followed by `list_rbind()`. Add a source filename column where it helps trace the rows. The course already presents this two-step alternative; current [purrr documentation](https://purrr.tidyverse.org/reference/map_dfr.html) recommends it over the superseded `map_dfr()` family. Existing working `map_dfr()` code need not be rewritten without a reason.\n\nA straightforward loop remains acceptable when it is easier to understand. If indexing is necessary, use `seq_along()` rather than `1:length()`. Do not turn the preference for tidyverse into an absolute ban on base R functions such as `mean()`, `sum()`, `lm()`, `file.path()`, or `stopifnot()`.\n\n## 14. Prepare the Plot Data Before Drawing the Plot\n\n**Course-derived, strongly supported by explicit comments.** Do the relevant transformation first. Inspect the data frame that will be plotted. Then construct the figure.\n\nFor counts or summaries shown as bars, prefer `count()` or `summarise()` followed by `geom_col()`. This makes the bar heights and labels refer to the same visible numbers. Use `geom_histogram()` for a distribution with an explicit binning decision. Do not replace appropriate statistical geoms indiscriminately.\n\n```r\nplot_data \u003c- analysis_data |>\n  count(treatment, name = \"n_respondents\")\n\nplot_data\n\nsample_plot \u003c- ggplot(\n  plot_data,\n  aes(x = treatment, y = n_respondents)\n) +\n  geom_col(fill = \"gray60\") +\n  geom_text(aes(label = n_respondents), vjust = -0.4) +\n  scale_y_continuous(expand = expansion(mult = c(0, 0.10))) +\n  labs(x = NULL, y = \"Number of respondents\") +\n  theme_few(base_size = 12)\n```\n\nPut common mappings in `ggplot()` when several layers share them. Use layer-specific `data =` and `aes()` when the data or mapping differs. Name `mapping =` if the argument position could be mistaken. Put fixed settings such as `color = \"gray60\"` outside `aes()`; put variable-based aesthetics inside it.\n\nLayer order matters. Draw background bands and reference elements before focal data when appropriate, then labels. Use `annotate()` or a dedicated annotation tibble for a single note or rectangle; do not unintentionally draw it once for every data row. The Technical Notes document this exact source of confusing opacity and overprinted text.\n\n## 15. The Default Visual Style\n\n**Confirmed.** Begin static ggplot figures with `theme_few()`. Add plot-specific `theme()` adjustments **after** the complete theme. Its documented default base size is 12 points; see [ggthemes](https://jrnold.github.io/ggthemes/reference/theme_few.html). The appropriate delivered size depends on the final physical figure size.\n\nPrefer a small, purposeful palette. Gray works well for context and a single accent for the focal comparison. Use accessible colors and non-color identification where needed. Do not add a gradient, an extra legend, or decorative color merely because a plotting function supports it.\n\nPrefer direct labels, meaningful axis labels, or facet headings to legends. Remove a legend only when the reader can still identify what each visual element means. A continuous map scale may need a legend; that is a useful exception, not a failure.\n\nUse small multiples when they make comparisons easier. Share scales when magnitude comparison is central. `scales = \"free_y\"` is a deliberate choice for within-panel patterns; it weakens direct cross-panel magnitude comparisons and should be explained.\n\nFor publication figures, put the title, estimand, uncertainty definition, sample, source, and methodological notes in the manuscript caption. Do not embed a large title or subtitle in the graphic. Standalone teaching, slides, dashboards, and animations may need a title or a visible date: the course's title-bearing figures are context-specific.\n\nChoose physical width and height for the intended placement. Keep text approximately the manuscript text size or only slightly smaller after scaling. Avoid excess blank space without clipping labels or intervals. A large RStudio preview is not evidence that a figure will be readable in a paper.\n\n## 16. Axes, Coordinates, and Chart Choices\n\n**Course-derived / previously confirmed.** Use `coord_cartesian()` for zooming when data should remain in statistical calculations. Scale limits can discard observations and change a smooth, histogram, or boxplot. Define limits, breaks, and labels in one scale call for an aesthetic; adding another scale replaces the earlier one.\n\nThe fact that a plot is technically valid does not make it substantively helpful. The Day 5 paired examples support these choices:\n\n| Problem | Preferred response |\n|---|---|\n| Truncated bar baseline | Start bars at zero |\n| Many crossing lines and a crowded legend | Label endpoints, highlight a focal series, or facet |\n| Pie slices that require precise comparison | Use sorted bars or points |\n| Unrelated dual y-axes | Separate clearly labeled panels |\n| Overplotted scatter labels | Reduce overplotting and label selected observations |\n| Raw-count map confounded by population | Use a meaningful rate when the question is comparative risk |\n| Stacked areas without a common baseline | Use small multiples when comparing component trends |\n| Difficult Likert comparisons | Consider a diverging arrangement with explicit neutral handling |\n| Grouped bars for change | Consider connected points or a slope display |\n| Decorative 3D bars | Use a clear two-dimensional chart |\n\nA count map may still answer a total-burden question. A diverging Likert figure is one option, not a universal requirement. The decision should follow the comparison the reader needs to make.\n\nFor estimates, show points and uncertainty intervals with a clear null/reference line. For ranks, choose the direction deliberately. For polygons, use the correct group identifier and coordinate system. For geographic data, do not treat longitude and latitude as arbitrary Cartesian coordinates.\n\n## 17. Tables and Saved Outputs\n\n**Previously confirmed / course-derived.** Keep table construction reproducible. The modeling precept uses `modelsummary()` with meaningful coefficient labels, selected fit statistics, and notes identifying robust standard errors. Preserve this explicit control rather than relying on an opaque default table.\n\nFor new publication tables where manuscript conventions support it, use `threeparttable`, `tabularx` spanning `\\textwidth`, `booktabs`, no vertical rules, caption/label above, and flush-left notes below. Prefer `[!t]`, a 1.25 baseline stretch, `@{\\extracolsep{\\fill}}`, and modest section spacing where appropriate. Use estimates on one row with robust standard errors beneath when that is the specified uncertainty method. Include concise useful fit statistics, and use `\\num{}` when `siunitx` is loaded.\n\nKeep coding definitions, reference groups, sample, uncertainty method, and significance notation in the notes. Do not invent significance stars or a robust specification just to mimic a classroom table. Do not hand-edit numerical results in exported LaTeX. If a table is too wide, revise structure or labels before shrinking it to unreadable size.\n\nSave a named plot explicitly:\n\n```r\nggsave(\n  filename = \"figures/treatment_effect.pdf\",\n  plot = effect_plot,\n  width = 6.5,\n  height = 3,\n  units = \"in\"\n)\n```\n\nThese dimensions are examples, not a fixed rule. Prefer vector PDF for LaTeX manuscripts; save a matching PNG when needed for previews or web use. Keep counterpart physical dimensions consistent. Specifying `plot =` prevents an intervening diagnostic plot from being exported accidentally; see [ggsave()](https://ggplot2.tidyverse.org/reference/ggsave.html).\n\n## 18. Reproducibility Without Unnecessary Machinery\n\n**Course-derived / recommendation.** A completed script should run from a clean R session, top to bottom, with documented inputs. Test the script as delivered. Restart R or run `Rscript --vanilla`; do not mistake `rm(list = ls())` for a complete session reset.\n\nUse `set.seed()` before simulation, sampling, or other relevant random operations; use a supported local seed for label placement or jitter when available. Record meaningful R and package versions. Preserve the project's existing dependency-management method instead of adding a new framework automatically.\n\nDo not globally suppress warnings. Inspect import, model, and plotting warnings. Narrow suppression is justified only for a known, explained condition after confirming the result. The course contains suppressed parsing warnings and deliberately failing demonstrations; those are not general research defaults.\n\nFor scraped or downloaded data, keep a reproducible snapshot when permitted, with source and retrieval date. Do not rely on a live HTML table remaining at index 3 forever. Validate its column names and content. Separate data acquisition from analysis when network changes would otherwise make reruns unstable.\n\nUse targeted checks for important assumptions: unique respondent IDs, join cardinality, allowed categories, missing values, expected model terms, and agreement between plotted estimates and saved results. Avoid a large testing framework for a small one-off analysis unless the project needs it.\n\nOpen saved figures and tables. Check labels, legend necessity, clipping, scale direction, uncertainty, number formatting, and final-size legibility. Confirm that the caption describes the actual exported plot.\n\n## 19. What Belongs Only to Teaching\n\nDo not copy the following into every research script merely because they appear in this archive:\n\n- Course/day/precept titles and `Name: xxx` / `Date: xxx` placeholders.\n- One script per 100-minute precept and the literal \u201cEnd of Precept\u201d heading.\n- Restrictions to functions already taught, or a universal prohibition on `dir.create()`.\n- Multiple alternative solutions, deliberate errors, incomplete exercises, or \u201cbad\u201d figures.\n- Repeated scraping inside a teaching function, fixed HTML table indices, or example-specific recoding assumptions.\n- The 11-by-8-inch classroom figure dimensions, all-uppercase input fields, or mixed legacy filenames.\n- Every use of `theme_minimal()`, `theme_void()`, `theme_light()`, `$`, or brackets.\n- Advanced optional grouped-model, tidy-evaluation, interactive-map, or animation workflows as the default for a simple task.\n\nRetain their underlying lessons: structure, explicit choices, inspectability, meaningful comparisons, and clean-session verification.\n\n## 20. The AI's Handoff Checklist\n\nBefore delivering work, the AI should be able to answer all of these:\n\n1. **Purpose:** Does each script explain what it does, its inputs, and its outputs?\n2. **Reading order:** Can I follow the data from import to the final result without hidden transformations?\n3. **Familiar vocabulary:** Is ordinary data work consistently tidyverse, with extraction exceptions explained?\n4. **Sample and coding:** Are exclusions, missing values, denominators, units, reference categories, and consequential recodes visible?\n5. **Joins and grouping:** Are keys, expected relationships, row counts, and the end of grouping checked?\n6. **Models:** Are the formula, sample, estimator, uncertainty method, and plotted terms explicit?\n7. **Figures and tables:** Do they follow the intended publication/teaching context, with readable labels and correct saved content?\n8. **Formatting:** Was `styler` actually run on the relevant files and the result reviewed?\n9. **Execution:** Did the delivered script actually run in a clean session? What warnings or limitations remain?\n10. **Explanation:** Does the handoff name the files, explain important changes, and point to the intermediate objects I should inspect?\n\nThe handoff should be concise: what changed, where to start reading, what was verified, and any meaningful exception. Do not claim that matching this guide proves I have understood the work. The practical test is whether I can locate and explain each consequential operation with little effort.\n\n## 21. Sources and Supporting Files\n\nThe primary evidence is the user-supplied `waseda_2026.zip` snapshot, not a live course folder that may have changed. Specific source paths and line references appear in [the evidence report](analysis/EVIDENCE.md). The existing personal R/figure reference supplies the previously confirmed publication conventions.\n\n- [Runnable end-to-end example](examples/01_readable_analysis.R): synthetic survey data, cleaning, sample accounting, HC2 model, tidy results, and saved figures.\n- [Runnable wrangling and function recipes](examples/02_wrangling_and_functions.R): reshaping, checked joins, strings, dates, factors, dot-prefixed arguments, and `map()`.\n- [New-script template](templates/analysis_script.R): a deliberately incomplete starter, not a validated analysis.\n- [AI application prompt](APPLY_GUIDE.md): the instruction to accompany this complete guide.\n- [Source evidence](analysis/EVIDENCE.md) and [verification record](analysis/VERIFICATION.md).\n\nOfficial references checked October 24, 2026: [Google R guide](https://google.github.io/styleguide/Rguide.html), [tidyverse style](https://style.tidyverse.org/), [styler](https://styler.r-lib.org/), [RStudio code sections](https://docs.posit.co/ide/user/ide/guide/code/code-sections.html), and the package references linked in the relevant sections. The five existing guides were used as local design references; their specific operational instructions were not treated as instructions for this task.\n"</script>
+  <footer><p>Version 1.0 · Prepared with AI assistance from the supplied Waseda 2026 materials.
+  Confirmed preferences, course-derived defaults, and recommendations are distinguished.</p>
+  <p><a href="index.html">Guide</a> · <a href="evidence.html">Source evidence</a> ·
+  <a href="verification.html">Verification</a> · <a href="PREFERRED_R_STYLE.md" download>Markdown</a></p></footer>
+</main>
+</body>
+</html>

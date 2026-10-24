@@ -1,0 +1,20 @@
+# Private project history and source-audit records remain local.
+project_history/
+analysis/*
+!analysis/EVIDENCE.md
+!analysis/VERIFICATION.md
+scripts/audit_sources.py
+scripts/inspect_r_sources.R
+examples/output/session_info.txt
+
+# Local environment and temporary artifacts.
+.DS_Store
+.Rproj.user/
+.Rhistory
+.RData
+.Renviron
+Rplots.pdf
+__pycache__/
+*.tmp.zip
+.env
+.env.*
