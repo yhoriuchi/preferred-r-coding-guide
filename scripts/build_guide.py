@@ -33,7 +33,11 @@ def add_anchors(body):
     return re.sub(r'<h([23])>(.*?)</h\1>', replace, body), headings
 
 
-def shell(title, contents, actions='', subtitle=''):
+def shell(title, contents, actions='', subtitle='', show_page_views=False):
+    page_views = (
+        '    <p><img src="https://hits.sh/yhoriuchi.github.io/preferred-r-coding-guide.svg?label=page%20views" alt="Page views"></p>\n'
+        if show_page_views else ''
+    )
     return f'''<!doctype html>
 <html lang="en">
 <head>
@@ -57,7 +61,7 @@ def shell(title, contents, actions='', subtitle=''):
       <li><strong>Created:</strong> October 24, 2026</li>
       <li><strong>Last revised:</strong> October 24, 2026</li>
     </ul>
-    <p>{subtitle}</p>
+{page_views}    <p>{subtitle}</p>
     {actions}
   </header>
   {contents}
@@ -104,7 +108,8 @@ contents = cards + toc + '<article id="guide-content">' + body + '</article>'
 contents += '<script type="application/json" id="guide-text">' + payload + '</script>'
 result = shell('My Preferred<br>R Coding Guide', contents, actions,
                'AI can do the analysis. The code should still feel like mine—clear enough '
-               'to understand quickly, inspect confidently, and rerun from start to finish.')
+               'to understand quickly, inspect confidently, and rerun from start to finish.',
+               show_page_views=True)
 (ROOT / 'index.html').write_text(result)
 
 for source, dest, title in [
