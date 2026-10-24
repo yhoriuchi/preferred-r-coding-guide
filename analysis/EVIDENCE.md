@@ -155,7 +155,7 @@ The new guide copies the LaTeX guide's base stylesheet, which matches the common
 
 The AI-use guide uses line height 1.52 and some smaller section gaps; the replication guide uses a slightly different shell allowance and bottom padding. The chosen base follows the majority family rather than pretending all five have identical values. Additional rules support a table of contents, focus outlines, and local download/copy controls without changing the shared base typography.
 
-The existing guides are English web guides, so the deliverable uses English and static HTML, with Markdown as the maintainable text source. Following the author's publication request, this guide is distributed through the `yhoriuchi/preferred-r-coding-guide` repository and GitHub Pages. No tracking badge was added.
+The existing guides are English web guides, so the deliverable uses English and static HTML, with Markdown as the maintainable text source. Following the author's publication request, this guide is distributed through the `yhoriuchi/preferred-r-coding-guide` repository and GitHub Pages. At the author's request, the homepage includes the same Hits.sh page-view badge used by the LaTeX guide, with a separate counter for this guide. It appears below the author and date metadata; the companion evidence and verification pages do not increment that homepage counter.
 
 ## Limits on Interpretation
 
